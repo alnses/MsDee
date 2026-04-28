@@ -1,33 +1,101 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <%
-    String u = (String) session.getAttribute("userName");
-    String e = (String) session.getAttribute("userEmail");
-    if (u == null) { response.sendRedirect("login.jsp"); return; }
+    // 🔒 Protect page (must login)
+    if (session.getAttribute("fullName") == null) {
+        response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+        return;
+    }
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Profile</title>
-    <link rel="stylesheet" href="style.css">
+    <title>My Account | Ms. Dee</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
 </head>
 <body>
-    <%@ include file="header.jsp" %>
-    <div class="account-container">
-        <div class="membership-summary-card">
-            <h2><%= u %></h2>
-            <p><%= e %></p>
-            <hr>
-            <p>Tier: <strong>Bronze</strong> | Discount: 0%</p>
+
+<!-- Navbar -->
+<jsp:include page="../partials/header.jsp"/>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="account-header">
+        <div>
+            <h1>My Account</h1>
+            <p>Welcome back, <%= session.getAttribute("fullName") %>!</p>
         </div>
-        <div class="menu-grid">
-            <div class="menu-item" onclick="location.href='membership.jsp'"><h3>Membership</h3><p>View benefits</p></div>
-            <div class="menu-item" onclick="location.href='LogoutServlet'"><h3>Sign Out</h3><p>End session</p></div>
+
+        <a href="${pageContext.request.contextPath}/logout" class="signout-btn">Sign Out</a>
+    </div>
+
+    <!-- Membership Card -->
+    <div class="member-card">
+        <p>Member Since <%= session.getAttribute("memberSince") %></p>
+        <h2><%= session.getAttribute("fullName") %></h2>
+        <p><%= session.getAttribute("email") %></p>
+
+        <div class="member-tier">
+            🏅
+            <h4><%= session.getAttribute("membershipTier") %></h4>
         </div>
-        <div class="how-it-works">
-            <h3>How It Works</h3>
-            <div class="step-item"><div class="step-number">1</div><p><strong>Shop:</strong> Earn points on every RM.</p></div>
-            <div class="step-item"><div class="step-number">2</div><p><strong>Unlock:</strong> Reach RM 500 for Silver.</p></div>
+
+        <div class="member-stats">
+            <div>
+                <p>Total Spent</p>
+                <h2>RM <%= session.getAttribute("totalSpent") %></h2>
+            </div>
+
+            <div>
+                <p>Member Discount</p>
+                <h2><%= session.getAttribute("discount") %>% OFF</h2>
+            </div>
         </div>
     </div>
+
+    <!-- Menu Cards -->
+    <div class="grid">
+
+        <!-- Profile -->
+        <a href="${pageContext.request.contextPath}/pages/profile.jsp" style="text-decoration:none;color:inherit;">
+            <div class="card menu-card">
+                <div class="icon">👤</div>
+                <h2>Profile</h2>
+                <p>Manage your personal information</p>
+            </div>
+        </a>
+
+        <!-- Orders -->
+        <div class="card menu-card">
+            <div class="icon">📦</div>
+            <h2>My Orders</h2>
+            <p>View order history and status</p>
+        </div>
+
+        <!-- Membership -->
+        <a href="${pageContext.request.contextPath}/pages/membership.jsp" style="text-decoration:none;color:inherit;">
+            <div class="card menu-card">
+                <div class="icon">⭐</div>
+                <h2>Membership</h2>
+                <p>View benefits and upgrade</p>
+            </div>
+        </a>
+
+        <!-- Addresses -->
+        <div class="card menu-card">
+            <div class="icon">📍</div>
+            <h2>Addresses</h2>
+            <p>Manage shipping addresses</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Footer -->
+<jsp:include page="../partials/footer.jsp"/>
+
 </body>
 </html>
