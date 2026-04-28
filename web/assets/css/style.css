@@ -1,0 +1,130 @@
+/* --- Global & Layout --- */
+:root {
+    --bronze: #cd7f32;
+    --silver: #b5b5b5;
+    --gold: #f1c40f;
+    --dark: #1a1a2e;
+    --primary: #6c5ce7; /* The purple color from your screenshot */
+    --primary-hover: #5a4bd1;
+    --light-bg: #f8f9fa;
+    --gray-muted: #eeeeee;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    color: #333;
+}
+
+/* --- Navigation --- */
+.navbar {
+    background: var(--dark);
+    color: white;
+    padding: 1.5rem 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #d1d1d1;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+/* --- Form Container & UI --- */
+.form-container {
+    background: white;
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 50px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+/* --- The Toggle Buttons (Sign In / Register) --- */
+.toggle-group {
+    display: flex;
+    background: var(--gray-muted);
+    padding: 5px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    gap: 5px;
+}
+
+.toggle-btn {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: #666;
+}
+
+/* Class to apply via JS when a button is selected */
+.toggle-btn.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+}
+
+.toggle-btn:hover:not(.active) {
+    background: #e0e0e0;
+}
+
+/* --- Inputs & Main Action Button --- */
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+}
+
+.submit-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
