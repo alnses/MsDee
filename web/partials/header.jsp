@@ -9,6 +9,7 @@
     <div class="nav-links">
         <a href="${pageContext.request.contextPath}/pages/index.jsp">Home</a>
         <a href="${pageContext.request.contextPath}/pages/shop.jsp">Shop</a>
+
         <a href="#">Promotions</a>
 
         <%
@@ -21,9 +22,11 @@
         %>
             <a href="${pageContext.request.contextPath}/pages/login.jsp">Sign In</a>
         <%
-            }
+            } 
         %>
 
-        <a href="#" class="cart-btn">🛒 Cart <span class="cart-count">0</span></a>
-    </div>
+    <a href="cart.jsp" class="cart-btn">
+        🛒 Cart 
+        <span class="cart-count">0</span>
+    </a>    </div>
 </div>

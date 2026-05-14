@@ -7,7 +7,6 @@
 </head>
 <body>
 
-<jsp:include page="../partials/header.jsp"/>
 
 <div class="auth-box">
     <div class="auth-icon">👤</div>
