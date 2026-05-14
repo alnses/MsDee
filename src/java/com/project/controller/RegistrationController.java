@@ -4,6 +4,8 @@ import com.project.dao.DBConnection;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -20,44 +22,42 @@ public class RegistrationController extends HttpServlet {
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
 
-        if (fullName == null || fullName.trim().isEmpty()
-                || email == null || email.trim().isEmpty()
-                || password == null || password.trim().isEmpty()
-                || phone == null || phone.trim().isEmpty()) {
-
-            response.sendRedirect(request.getContextPath() + "/pages/register.jsp?error=empty");
-            return;
-        }
-
         try {
             Connection conn = DBConnection.getConnection();
-
-            String sql = "INSERT INTO users (full_name, email, password, phone) VALUES (?, ?, ?, ?)";
-
+            String sql = "INSERT INTO users (full_name, email, password, phone, member_since) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
+            
+            // Generate Current Date
+            LocalDate today = LocalDate.now();
+            String formattedDate = today.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+
             ps.setString(1, fullName);
             ps.setString(2, email);
             ps.setString(3, password);
             ps.setString(4, phone);
+            ps.setString(5, formattedDate);
 
             int row = ps.executeUpdate();
 
             if (row > 0) {
-                response.sendRedirect(request.getContextPath() + "/pages/login.jsp?registered=success");
+                HttpSession session = request.getSession();
+                session.setAttribute("fullName", fullName);
+                session.setAttribute("email", email);
+                session.setAttribute("memberSince", formattedDate); // Fixes the null date
+                
+                // Default stats for new users
+                session.setAttribute("membershipTier", "Bronze");
+                session.setAttribute("totalSpent", 0.0);
+                session.setAttribute("discount", 0);
+
+                response.sendRedirect(request.getContextPath() + "/pages/homepage.jsp");
             } else {
-                response.sendRedirect(request.getContextPath() + "/pages/register.jsp?error=fail");
+                response.sendRedirect(request.getContextPath() + "/pages/register.jsp?error=1");
             }
-
-            ps.close();
             conn.close();
-
         } catch (Exception e) {
             e.printStackTrace();
-
-            // temporary: show real error in browser
-            response.setContentType("text/html");
-            response.getWriter().println("<h2>Registration Error</h2>");
-            response.getWriter().println("<p>" + e.getMessage() + "</p>");
+            response.sendRedirect(request.getContextPath() + "/pages/register.jsp?error=1");
         }
     }
 }

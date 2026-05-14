@@ -7,6 +7,12 @@
 </head>
 <body>
 
+    <%
+    if (session.getAttribute("fullName") == null) {
+        response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+        return;
+    }
+%>
 <jsp:include page="../partials/header.jsp"/>
 
 <section class="home-hero">

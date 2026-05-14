@@ -1,4 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%
+    // Clears any old session (like "qis") so the header shows "Profile"
+    if (session != null) {
+        session.invalidate(); 
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,14 +13,15 @@
 </head>
 <body>
 
+<jsp:include page="../partials/header.jsp"/>
 
 <div class="auth-box">
     <div class="auth-icon">👤</div>
     <h2>Welcome Back</h2>
-    <p>Sign in to your account or create a new one</p>
+    <p>Sign in to your account</p>
 
     <% if (request.getParameter("error") != null) { %>
-        <div class="alert">Invalid email or password.</div>
+        <div class="alert" style="color:red; margin-bottom:10px;">Invalid email or password.</div>
     <% } %>
 
     <div class="tab-buttons">
