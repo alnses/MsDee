@@ -1,4 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if (session.getAttribute("fullName") == null) {
+        response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

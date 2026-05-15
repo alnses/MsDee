@@ -1,32 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-
-<div class="navbar">
+<nav class="navbar">
     <div class="logo">
         <h1>Ms. Dee</h1>
-        <p>Home Appliances Specialist</p>
+        <p>E-Commerce System</p>
     </div>
-
     <div class="nav-links">
-        <a href="${pageContext.request.contextPath}/pages/index.jsp">Home</a>
+        <a href="${pageContext.request.contextPath}/pages/homepage.jsp">Home</a>
         <a href="${pageContext.request.contextPath}/pages/shop.jsp">Shop</a>
-
-        <a href="#">Promotions</a>
-
-        <%
-            String name = (String) session.getAttribute("fullName");
-            if (name != null) {
-        %>
-            <a href="${pageContext.request.contextPath}/pages/account.jsp">👤 <%= name %></a>
-        <%
-            } else {
-        %>
-            <a href="${pageContext.request.contextPath}/pages/login.jsp">Sign In</a>
-        <%
-            } 
-        %>
-
-    <a href="cart.jsp" class="cart-btn">
-        🛒 Cart 
-        <span class="cart-count">0</span>
-    </a>    </div>
-</div>
+        <a href="${pageContext.request.contextPath}/pages/promotions.jsp">Promotions</a>
+        
+        <a href="${pageContext.request.contextPath}/pages/profile.jsp">
+            👤 ${not empty sessionScope.fullName ? sessionScope.fullName : 'Profile'}
+        </a>
+        
+        <a href="${pageContext.request.contextPath}/pages/cart.jsp" class="cart-btn">
+            🛒 Cart <span class="cart-count">0</span>
+        </a>
+    </div>
+</nav>
