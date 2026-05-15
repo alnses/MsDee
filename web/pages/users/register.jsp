@@ -7,7 +7,6 @@
 </head>
 <body>
 
-<jsp:include page="../partials/header.jsp"/>
 
 <div class="auth-box">
     <h2>Create Account</h2>
