@@ -25,7 +25,7 @@ public class RegistrationController extends HttpServlet {
                 || password == null || password.trim().isEmpty()
                 || phone == null || phone.trim().isEmpty()) {
 
-            response.sendRedirect(request.getContextPath() + "/pages/register.jsp?error=empty");
+            response.sendRedirect(request.getContextPath() + "/pages/users/register.jsp?error=empty");
             return;
         }
 
@@ -43,9 +43,9 @@ public class RegistrationController extends HttpServlet {
             int row = ps.executeUpdate();
 
             if (row > 0) {
-                response.sendRedirect(request.getContextPath() + "/pages/login.jsp?registered=success");
+                response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp?registered=success");
             } else {
-                response.sendRedirect(request.getContextPath() + "/pages/register.jsp?error=fail");
+                response.sendRedirect(request.getContextPath() + "/pages/users/register.jsp?error=fail");
             }
 
             ps.close();

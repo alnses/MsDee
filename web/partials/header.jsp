@@ -7,23 +7,23 @@
     </div>
 
     <div class="nav-links">
-        <a href="${pageContext.request.contextPath}/pages/index.jsp">Home</a>
-        <a href="${pageContext.request.contextPath}/pages/shop.jsp">Shop</a>
+        <a href="${pageContext.request.contextPath}/pages/users/homepage.jsp">Home</a>
+        <a href="${pageContext.request.contextPath}/pages/users/shop.jsp">Shop</a>
         <a href="#">Promotions</a>
 
         <%
             String name = (String) session.getAttribute("fullName");
             if (name != null) {
         %>
-            <a href="${pageContext.request.contextPath}/pages/account.jsp">👤 <%= name %></a>
+        <a href="${pageContext.request.contextPath}/pages/users/account.jsp">👤 <%= name%></a>
         <%
-            } else {
+        } else {
         %>
-            <a href="${pageContext.request.contextPath}/pages/login.jsp">Sign In</a>
+        <a href="${pageContext.request.contextPath}/pages/users/login.jsp">Sign In</a>
         <%
             }
         %>
 
-        <a href="#" class="cart-btn">🛒 Cart <span class="cart-count">0</span></a>
+        <a href="${pageContext.request.contextPath}/pages/users/cart.jsp" class="cart-btn">🛒 Cart <span class="cart-count">0</span></a>
     </div>
 </div>

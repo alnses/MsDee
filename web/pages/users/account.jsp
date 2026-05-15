@@ -17,7 +17,7 @@
 <body>
 
 <!-- Navbar -->
-<jsp:include page="../partials/header.jsp"/>
+<jsp:include page="../../partials/header.jsp"/>
 
 <div class="container">
 
@@ -59,7 +59,7 @@
     <div class="grid">
 
         <!-- Profile -->
-        <a href="${pageContext.request.contextPath}/pages/profile.jsp" style="text-decoration:none;color:inherit;">
+        <a href="${pageContext.request.contextPath}/pages/users/profile.jsp" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
                 <div class="icon">👤</div>
                 <h2>Profile</h2>
@@ -75,7 +75,7 @@
         </div>
 
         <!-- Membership -->
-        <a href="${pageContext.request.contextPath}/pages/membership.jsp" style="text-decoration:none;color:inherit;">
+        <a href="${pageContext.request.contextPath}/pages/users/membership.jsp" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
                 <div class="icon">⭐</div>
                 <h2>Membership</h2>
@@ -95,7 +95,7 @@
 </div>
 
 <!-- Footer -->
-<jsp:include page="../partials/footer.jsp"/>
+<jsp:include page="../../partials/footer.jsp"/>
 
 </body>
 </html>
