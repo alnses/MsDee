@@ -26,7 +26,7 @@
     </div>
 
     <div class="footer-bottom">
-        © 2024 Ms. Dee Home Appliances. All rights reserved.
+        © 2026 Ms. Dee Home Appliances. All rights reserved.
     </div>
 
 </div>

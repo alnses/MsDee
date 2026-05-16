@@ -1033,7 +1033,7 @@ button {
     color: #9a9ab3;
 }
 
-<<<<<<< HEAD
+
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 1000px) {
@@ -1317,7 +1317,6 @@ button {
     }
 }
 
-=======
 /* Custom Green for Buttons */
 .btn-place-order {
     background-color: #10b981 !important;
@@ -1328,7 +1327,7 @@ button {
 
 /* Price Text Color */
 .price-text {
-    color: #e65c4f; 
+    color: #e65c4f;
     font-weight: bold;
 }
 
@@ -1546,4 +1545,174 @@ button {
 /* =========================
     SHOP
 ========================= */
->>>>>>> de1e052a0f22f813002f6d89cab149c67f9625f6
+
+/* ===== ADDRESS PAGE ===== */
+
+.address-page {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+}
+
+.address-page h1 {
+    font-size: 38px;
+    font-weight: 800;
+    color: #19172b;
+    margin-bottom: 30px;
+}
+
+
+/* Form Card */
+
+.address-form-card {
+    background: white;
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    margin-bottom: 35px;
+}
+
+.address-form {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 18px;
+}
+
+.address-form input,
+.address-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e4e4e7;
+    border-radius: 14px;
+    background: #fafafa;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.address-form textarea {
+    min-height: 100px;
+    resize: none;
+    grid-column: span 2;
+}
+
+.address-form input:focus,
+.address-form textarea:focus {
+    border-color: #6579f2;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(101,121,242,0.1);
+}
+
+
+/* Add Address Button */
+
+.add-address-btn {
+    background: #6579f2;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    grid-column: span 2;
+    transition: .2s;
+}
+
+.add-address-btn:hover {
+    background: #5367e6;
+}
+
+
+/* Empty State */
+
+.empty-address {
+    background: white;
+    border-radius: 22px;
+    padding: 30px;
+    text-align: center;
+    color: #6b7280;
+    box-shadow: 0 10px 25px rgba(0,0,0,.05);
+}
+
+
+/* Saved Address Card */
+
+.address-card {
+    background: white;
+    border-radius: 22px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.05);
+}
+
+.address-card h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    color: #19172b;
+}
+
+.address-card p {
+    color: #5b5b66;
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.primary-check{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.primary-check input{
+    width:18px;
+    height:18px;
+    accent-color:#6579f2;
+}
+
+.primary-badge{
+    background:#6579f2;
+    color:white;
+    padding:5px 10px;
+    border-radius:50px;
+    font-size:12px;
+    margin-left:10px;
+}
+
+/* Delete Button */
+
+.delete-address-btn {
+    margin-top: 15px;
+    background: #ff584d;
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.delete-address-btn:hover {
+    background: #e94a40;
+}
+
+
+/* Mobile */
+
+@media(max-width:700px){
+
+    .address-form{
+        grid-template-columns:1fr;
+    }
+
+    .address-form textarea{
+        grid-column:span 1;
+    }
+
+    .add-address-btn{
+        grid-column:span 1;
+    }
+
+}

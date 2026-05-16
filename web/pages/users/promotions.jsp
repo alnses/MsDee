@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <%
     if (session.getAttribute("fullName") == null) {
-        response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
         return;
     }
 %>
@@ -10,6 +10,7 @@
 <head>
     <title>Promotions | Ms. Dee</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+
     <style>
         .promo-container {
             width: 90%;
@@ -30,11 +31,14 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             text-align: center;
-            position: relative; /* Required for the badge position */
+            position: relative;
             transition: 0.3s;
         }
 
-        /* The Red Discount Circle */
+        .promo-card:hover {
+            transform: translateY(-5px);
+        }
+
         .discount-badge {
             position: absolute;
             top: 15px;
@@ -52,10 +56,11 @@
             box-shadow: 0 4px 10px rgba(255, 88, 77, 0.3);
         }
 
-        .promo-emoji {
-            font-size: 55px;
-            margin-bottom: 10px;
-            display: block;
+        .promo-image {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
         }
 
         .promo-card h3 {
@@ -72,16 +77,14 @@
             display: block;
         }
 
-        /* Reduced Price Size as requested */
         .promo-price {
-            font-size: 20px; 
+            font-size: 20px;
             font-weight: 800;
             color: #19172b;
             margin-bottom: 15px;
             display: block;
         }
 
-        /* Matches your main theme button */
         .promo-btn {
             background: #6579f2;
             color: white;
@@ -99,54 +102,70 @@
         }
     </style>
 </head>
+
 <body>
 
-<jsp:include page="../partials/header.jsp"/>
+<jsp:include page="../../partials/header.jsp"/>
 
 <div class="promo-container">
     <h1 style="text-align: center; font-size: 32px; font-weight: 800;">Special Promotions</h1>
     <p style="text-align: center; color: #6b7280;">Up to 30% OFF on selected home appliances</p>
 
     <div class="promo-grid">
-        
+
         <div class="promo-card">
             <div class="discount-badge">-40%</div>
-            <span class="promo-emoji">🍚</span>
+            <img class="promo-image" src="${pageContext.request.contextPath}/assets/images/ricecooker.png" alt="Rice Cooker">
             <h3>Rice Cooker</h3>
             <span class="category-label">Kitchen</span>
             <span class="promo-price">RM 71.92</span>
-            <button class="promo-btn" onclick="addToCart('Rice Cooker', 71.92, '🍚')">Add to Cart</button>
+            <button class="promo-btn" onclick="addToCart('Rice Cooker', 71.92, '${pageContext.request.contextPath}/assets/images/rice-cooker.png')">
+                Add to Cart
+            </button>
         </div>
 
         <div class="promo-card">
             <div class="discount-badge">-15%</div>
-            <span class="promo-emoji">🥤</span>
+            <img class="promo-image" src="${pageContext.request.contextPath}/assets/images/blender.png" alt="Blender">
             <h3>Blender</h3>
             <span class="category-label">Kitchen</span>
             <span class="promo-price">RM 110.42</span>
-            <button class="promo-btn" onclick="addToCart('Blender', 110.42, '🥤')">Add to Cart</button>
+            <button class="promo-btn" onclick="addToCart('Blender', 110.42, '${pageContext.request.contextPath}/assets/images/blender.png')">
+                Add to Cart
+            </button>
         </div>
 
         <div class="promo-card">
             <div class="discount-badge">-20%</div>
-            <span class="promo-emoji">❄️</span>
+            <img class="promo-image" src="${pageContext.request.contextPath}/assets/images/aircooler.png" alt="Air Cooler">
             <h3>Air Cooler</h3>
             <span class="category-label">Cooling</span>
             <span class="promo-price">RM 151.92</span>
-            <button class="promo-btn" onclick="addToCart('Air Cooler', 151.92, '❄️')">Add to Cart</button>
+            <button class="promo-btn" onclick="addToCart('Air Cooler', 151.92, '${pageContext.request.contextPath}/assets/images/air-cooler.png')">
+                Add to Cart
+            </button>
         </div>
 
     </div>
 </div>
 
 <script>
-    function addToCart(name, price, icon) {
+    function addToCart(name, price, image) {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.push({ name: name, price: price, icon: icon });
+
+        cart.push({
+            name: name,
+            price: price,
+            image: image
+        });
+
         localStorage.setItem("cart", JSON.stringify(cart));
-        
+
         const counter = document.querySelector(".cart-count");
-        if(counter) counter.innerText = cart.length;
+        if (counter) {
+            counter.innerText = cart.length;
+        }
+
         alert(name + " added to deals cart!");
     }
 </script>

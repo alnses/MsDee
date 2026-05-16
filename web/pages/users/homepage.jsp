@@ -33,7 +33,7 @@
         <section class="promo-banner">
             <h2>Special Promotions</h2>
             <p>Up to 30% OFF on selected home appliances</p>
-            <a href="#" class="promo-btn">View All Deals</a>
+            <a href="${pageContext.request.contextPath}/pages/users/promotions.jsp" class="promo-btn">View All Deals</a>
         </section>
 
         <section class="home-section">
