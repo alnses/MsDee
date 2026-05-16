@@ -2,28 +2,24 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/homepage.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/login.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/registerservlet.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/partials/header.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/membership.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/com/project/dao/DBConnection.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/register.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/TestDB.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/shop.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/account.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/com/project/controller/LogoutController.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/com/project/controller/RegistrationController.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/TestConnection.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/assets/css/style.css</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/web/pages/profile.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/com/project/controller/LoginController.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/Msdee/MsDee/src/java/com/project/filter/AuthFilter.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/checkout.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/header.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/profile.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/membership.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/LogoutController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/login.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/footer.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/assets/css/style.css</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/filter/AuthFilter.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/register.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/shop.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/homepage.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/promotions.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/cart.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/account.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/index.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/LoginController.java</file>
         </group>
->>>>>>> de1e052a0f22f813002f6d89cab149c67f9625f6
     </open-files>
 </project-private>
