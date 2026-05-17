@@ -3,57 +3,88 @@ package com.project.controller;
 import com.project.dao.ProductDAO;
 import com.project.model.Product;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/ProductController")
+@WebServlet("/products")
 public class ProductController extends HttpServlet {
+
+    private ProductDAO productDAO;
+
+    @Override
+    public void init() {
+        productDAO = new ProductDAO();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String category = request.getParameter("category");
+        List<Product> products;
+
+        if (category != null && !category.equalsIgnoreCase("all")) {
+            products = productDAO.getProductsByCategory(category);
+        } else {
+            products = productDAO.getAllProducts();
+        }
+
+        request.setAttribute("products", products);
+        request.getRequestDispatcher("/pages/users/shop.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
-        ProductDAO dao = new ProductDAO();
 
-        if ("add".equals(action)) {
+        try {
 
-            Product product = new Product();
+            if ("add".equals(action)) {
 
-            product.setProductName(request.getParameter("productName"));
-            product.setCategory(request.getParameter("category"));
-            product.setPrice(Double.parseDouble(request.getParameter("price")));
-            product.setStockQuantity(Integer.parseInt(request.getParameter("stockQuantity")));
-            product.setImagePath(request.getParameter("imagePath"));
-            product.setDescription(request.getParameter("description"));
+                Product p = new Product();
 
-            int stock = product.getStockQuantity();
+                p.setProductName(request.getParameter("productName"));
+                p.setCategory(request.getParameter("category"));
+                p.setDescription(request.getParameter("description"));
+                p.setPrice(Double.parseDouble(request.getParameter("price")));
+                p.setStockQuantity(Integer.parseInt(request.getParameter("stockQuantity")));
+                p.setImageUrl(request.getParameter("imageUrl"));
+                p.setActive(true);
 
-            if (stock <= 0) {
-                product.setStatus("Out of Stock");
-            } else if (stock <= 5) {
-                product.setStatus("Low Stock");
-            } else {
-                product.setStatus("Available");
+                productDAO.addProduct(p);
+
+                response.sendRedirect(request.getContextPath() + "/pages/admin/manageProducts.jsp");
+                return;
+
+            } else if ("delete".equals(action)) {
+
+                int productId = Integer.parseInt(request.getParameter("productId"));
+
+                productDAO.deleteProduct(productId);
+
+                response.sendRedirect(request.getContextPath() + "/pages/admin/manageProducts.jsp");
+                return;
+
+            } else if ("updateStock".equals(action)) {
+
+                int productId = Integer.parseInt(request.getParameter("productId"));
+                int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
+
+                productDAO.updateStock(productId, stockQuantity);
+
+                response.sendRedirect(request.getContextPath() + "/pages/admin/manageInventory.jsp");
+                return;
             }
 
-            dao.addProduct(product);
             response.sendRedirect(request.getContextPath() + "/pages/admin/manageProducts.jsp");
 
-        } else if ("delete".equals(action)) {
-
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            dao.deleteProduct(productId);
-            response.sendRedirect(request.getContextPath() + "/pages/admin/manageProducts.jsp");
-
-        } else if ("updateStock".equals(action)) {
-
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            int stockQuantity = Integer.parseInt(request.getParameter("stockQuantity"));
-
-            dao.updateStock(productId, stockQuantity);
-            response.sendRedirect(request.getContextPath() + "/pages/admin/manageInventory.jsp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(request.getContextPath() + "/pages/admin/manageProducts.jsp?error=1");
         }
     }
 }

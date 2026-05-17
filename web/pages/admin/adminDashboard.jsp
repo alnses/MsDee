@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <jsp:include page="/partials/admin-sidebar.jsp"/>
 
 <div class="admin-layout">
 
@@ -25,7 +26,6 @@
         <a href="manageInventory.jsp">Manage Inventory</a>
         <a href="manageOrders.jsp">Manage Orders</a>
         <a href="report.jsp">Reports</a>
-        <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </aside>
 
     <main class="admin-main">

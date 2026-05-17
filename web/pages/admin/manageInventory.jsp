@@ -17,62 +17,64 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Manage Inventory | Ms. Dee</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=102">
-</head>
+    <head>
+        <title>Manage Inventory | Ms. Dee</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=102">
+    </head>
 
-<body>
+    <body>
+        <jsp:include page="/partials/admin-sidebar.jsp"/>
 
-<div class="admin-layout">
+        <div class="admin-layout">
 
-    <aside class="admin-sidebar">
-        <h2>Ms.Dee Admin</h2>
-        <a href="adminDashboard.jsp">Dashboard</a>
-        <a href="manageProducts.jsp">Manage Products</a>
-        <a href="manageInventory.jsp" class="active">Manage Inventory</a>
-        <a href="manageOrders.jsp">Manage Orders</a>
-        <a href="report.jsp">Reports</a>
-        <a href="${pageContext.request.contextPath}/logout">Logout</a>
-    </aside>
+            <aside class="admin-sidebar">
+                <h2>Ms.Dee Admin</h2>
+                <a href="adminDashboard.jsp">Dashboard</a>
+                <a href="manageProducts.jsp">Manage Products</a>
+                <a href="manageInventory.jsp" class="active">Manage Inventory</a>
+                <a href="manageOrders.jsp">Manage Orders</a>
+                <a href="report.jsp">Reports</a>
+            </aside>
 
-    <main class="admin-main">
+            <main class="admin-main">
 
-        <h1>Manage Inventory</h1>
-        <p>Update stock quantity and product availability status.</p>
+                <h1>Manage Inventory</h1>
+                <p>Update stock quantity and product availability status.</p>
 
-        <table class="admin-table">
-            <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Stock Quantity</th>
-                <th>Status</th>
-                <th>Update Stock</th>
-            </tr>
+                <table class="admin-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Stock Quantity</th>
+                        <th>Status</th>
+                        <th>Update Stock</th>
+                    </tr>
 
-            <% for (Product p : products) { %>
-                <tr>
-                    <td><%= p.getProductId() %></td>
-                    <td><%= p.getProductName() %></td>
-                    <td><%= p.getCategory() %></td>
-                    <td><%= p.getStockQuantity() %></td>
-                    <td><%= p.getStatus() %></td>
-                    <td>
-                        <form action="${pageContext.request.contextPath}/ProductController" method="post">
-                            <input type="hidden" name="action" value="updateStock">
-                            <input type="hidden" name="productId" value="<%= p.getProductId() %>">
-                            <input type="number" name="stockQuantity" value="<%= p.getStockQuantity() %>" min="0" required>
-                            <button type="submit">Update</button>
-                        </form>
-                    </td>
-                </tr>
-            <% } %>
-        </table>
+                    <% for (Product p : products) {%>
+                    <tr>
+                        <td><%= p.getProductId()%></td>
+                        <td><%= p.getProductName()%></td>
+                        <td><%= p.getCategory()%></td>
+                        <td><%= p.getStockQuantity()%></td>
+                        <td><%= p.isActive() ? "Active" : "Inactive"%></td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/products" method="post">
+                                <input type="hidden" name="action" value="updateStock">
+                                <input type="hidden" name="productId" value="<%= p.getProductId()%>">
 
-    </main>
+                                <input type="number" name="stockQuantity" value="<%= p.getStockQuantity()%>" min="0" required>
 
-</div>
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }%>
+                </table>
 
-</body>
+            </main>
+
+        </div>
+
+    </body>
 </html>

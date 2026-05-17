@@ -23,6 +23,7 @@
 </head>
 
 <body>
+    <jsp:include page="/partials/admin-sidebar.jsp"/>
 
 <div class="admin-layout">
 
@@ -33,7 +34,6 @@
         <a href="manageInventory.jsp">Manage Inventory</a>
         <a href="manageOrders.jsp">Manage Orders</a>
         <a href="report.jsp">Reports</a>
-        <a href="${pageContext.request.contextPath}/logout">Logout</a>
     </aside>
 
     <main class="admin-main">
@@ -44,7 +44,7 @@
         <div class="admin-form-box">
             <h2>Add New Product</h2>
 
-            <form action="${pageContext.request.contextPath}/ProductController" method="post">
+            <form action="${pageContext.request.contextPath}/products" method="post">
 
                 <input type="hidden" name="action" value="add">
 
@@ -110,9 +110,9 @@
                     <td><%= p.getCategory() %></td>
                     <td>RM <%= String.format("%.2f", p.getPrice()) %></td>
                     <td><%= p.getStockQuantity() %></td>
-                    <td><%= p.getStatus() %></td>
+                    <td><%= p.isActive() ? "Active" : "Inactive" %></td>
                     <td>
-                        <form action="${pageContext.request.contextPath}/ProductController" method="post" style="display:inline;">
+                        <form action="${pageContext.request.contextPath}/products" method="post" style="display:inline;">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="productId" value="<%= p.getProductId() %>">
                             <button type="submit" onclick="return confirm('Delete this product?')">Delete</button>
