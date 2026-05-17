@@ -3,23 +3,49 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/checkout.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/header.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/dao/OrderDAO.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/admin/report.jsp</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/profile.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/membership.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/LogoutController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/dao/CartDAO.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/model/CartItem.java</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/login.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/footer.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/admin/manageProducts.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/admin-sidebar.jsp</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/assets/css/style.css</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/dao/ProductDAO.java</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/filter/AuthFilter.java</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/register.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/model/Product.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/AdminOrderController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/CheckoutController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/cart.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/index.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/LoginController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/admin/manageInventory.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/addresses.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/model/OrderItem.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/model/User.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/checkout.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/header.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/admin/adminLogin.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/RegistrationController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/model/Order.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/admin/adminDashboard.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/membership.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/LogoutController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/partials/footer.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/ProductController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/admin/manageOrders.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/dao/AddressDAO.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/CartController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/model/Address.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/dao/UserDAO.java</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/shop.jsp</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/homepage.jsp</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/promotions.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/cart.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/AddressController.java</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/pages/users/account.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/web/index.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/LoginController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE%203953/MsDee/src/java/com/project/controller/ProfileController.java</file>
         </group>
     </open-files>
 </project-private>

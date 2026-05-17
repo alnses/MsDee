@@ -36,63 +36,7 @@
             <a href="${pageContext.request.contextPath}/pages/users/promotions.jsp" class="promo-btn">View All Deals</a>
         </section>
 
-        <section class="home-section">
-            <h2>Featured Products</h2>
-
-            <div class="product-grid">
-                <div class="home-product-card">
-                    <span class="discount">-40%</span>
-
-                    <div class="product-image">
-                        <img src="${pageContext.request.contextPath}/assets/images/ricecooker.png" alt="Rice Cooker">
-                    </div>
-
-                    <h3>Rice Cooker</h3>
-                    <p>Kitchen</p>
-                    <h4>RM 71.92</h4>
-                    <button onclick="addToCart(
-                                    'Rice Cooker',
-                                    71.92,
-                                    '${pageContext.request.contextPath}/assets/images/ricecooker.png'
-                                    )">Add to Cart</button>
-                </div>
-
-                <div class="home-product-card">
-                    <span class="discount">-15%</span>
-
-                    <div class="product-image">
-                        <img src="${pageContext.request.contextPath}/assets/images/blender.png" alt="Blender">
-                    </div>
-
-                    <h3>Blender</h3>
-                    <p>Kitchen</p>
-                    <h4>RM 110.42</h4>
-                    <button onclick="addToCart(
-                                    'Blender',
-                                    110.42,
-                                    '${pageContext.request.contextPath}/assets/images/blender.png'
-                                    )">Add to Cart</button>
-                </div>
-
-                <div class="home-product-card">
-                    <span class="discount">-20%</span>
-
-                    <div class="product-image">
-                        <img src="${pageContext.request.contextPath}/assets/images/aircooler.png" alt="Air Cooler">
-                    </div>
-
-                    <h3>Air Cooler</h3>
-                    <p>Cooling</p>
-                    <h4>RM 189.90</h4>
-                    <button onclick="addToCart(
-                                    'Air Cooler',
-                                    189.90,
-                                    '${pageContext.request.contextPath}/assets/images/aircooler.png'
-                                    )">Add to Cart</button>
-                </div>
-            </div>
-        </section>
-
+        
         <jsp:include page="../../partials/footer.jsp"/>
 
     </body>

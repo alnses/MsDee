@@ -1,15 +1,29 @@
 package com.project.model;
 
 public class Product {
-
     private int productId;
     private String productName;
     private String category;
+    private String description;
     private double price;
     private int stockQuantity;
-    private String imagePath;
-    private String description;
-    private String status;
+    private String imageUrl;
+    private boolean active;
+
+    public Product() {
+    }
+
+    public Product(int productId, String productName, String category, String description,
+                   double price, int stockQuantity, String imageUrl, boolean active) {
+        this.productId = productId;
+        this.productName = productName;
+        this.category = category;
+        this.description = description;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.imageUrl = imageUrl;
+        this.active = active;
+    }
 
     public int getProductId() {
         return productId;
@@ -35,6 +49,14 @@ public class Product {
         this.category = category;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public double getPrice() {
         return price;
     }
@@ -51,27 +73,23 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getDescription() {
-        return description;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public boolean getActive() {
+        return active;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
