@@ -56,6 +56,34 @@
         <servlet-name>registerservlet</servlet-name>
         <url-pattern>/registerservlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>CheckoutController</servlet-name>
+        <servlet-class>com.project.controller.CheckoutController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CheckoutController</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PaymentReturnController</servlet-name>
+        <servlet-class>com.project.controller.PaymentReturnController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PaymentReturnController</servlet-name>
+        <url-pattern>/payment-return</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PaymentCallbackController</servlet-name>
+        <servlet-class>com.project.controller.PaymentCallbackController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PaymentCallbackController</servlet-name>
+        <url-pattern>/payment-callback</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
