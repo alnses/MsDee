@@ -1,57 +1,248 @@
 package com.project.controller;
 
 import com.project.dao.DBConnection;
-import com.project.dao.UserDAO;
-import com.project.model.User;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/checkout")
 public class CheckoutController extends HttpServlet {
+
+    private static final String TOYYIBPAY_API_URL =
+            "https://toyyibpay.com/index.php/api/createBill";
+
+    private static final String TOYYIBPAY_PAYMENT_URL =
+            "https://toyyibpay.com/";
+
+    private static final String SECRET_KEY =
+            "g4unf9oe-mrhg-4h42-8fc6-u38wydg8e864";
+
+    private static final String CATEGORY_CODE =
+            "huu88rpz";
+
+    private static final String CART_PAGE =
+            "/pages/users/cart.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
 
-        if (session == null || session.getAttribute("userId") == null) {
+        if (session == null) {
             response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
             return;
         }
 
-        int userId = (int) session.getAttribute("userId");
-        double totalAmount = Double.parseDouble(request.getParameter("totalAmount"));
+        Object userObj = session.getAttribute("user_id");
+
+        if (userObj == null) {
+            userObj = session.getAttribute("userId");
+        }
+
+        if (userObj == null) {
+            response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
+            return;
+        }
+
+        int userId = Integer.parseInt(userObj.toString());
+
+        String fullName = request.getParameter("fullname");
+
+        if (fullName == null || fullName.trim().isEmpty()) {
+            Object nameObj = session.getAttribute("fullName");
+
+            if (nameObj == null) {
+                nameObj = session.getAttribute("full_name");
+            }
+
+            fullName = nameObj != null ? nameObj.toString() : "Customer";
+        }
+
+        String email = "customer@email.com";
+
+        if (session.getAttribute("email") != null) {
+            email = session.getAttribute("email").toString();
+        }
+
+        String phone = request.getParameter("phone");
+
+        if (phone == null || phone.trim().isEmpty()) {
+            phone = "0100000000";
+        }
+
+        String totalParam = request.getParameter("totalAmount");
+        String cartData = request.getParameter("cartData");
+
+        if (totalParam == null || totalParam.trim().isEmpty()) {
+            response.sendRedirect(request.getContextPath() + CART_PAGE + "?error=missing_total");
+            return;
+        }
+
+        if (SECRET_KEY.equals("PASTE_YOUR_SECRET_KEY_HERE")
+                || CATEGORY_CODE.equals("PASTE_YOUR_CATEGORY_CODE_HERE")) {
+
+            response.sendRedirect(request.getContextPath() + CART_PAGE + "?error=missing_toyyibpay_key");
+            return;
+        }
 
         try {
-            Connection conn = DBConnection.getConnection();
+            double totalAmount = Double.parseDouble(totalParam);
 
-            String sql = "INSERT INTO orders (user_id, total_amount, order_status) VALUES (?, ?, ?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, userId);
-            ps.setDouble(2, totalAmount);
-            ps.setString(3, "Completed");
-            ps.executeUpdate();
+            if (totalAmount <= 0) {
+                response.sendRedirect(request.getContextPath() + CART_PAGE + "?error=empty_cart");
+                return;
+            }
 
-            conn.close();
+            int amountInCent = (int) Math.round(totalAmount * 100);
 
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.getUserById(userId);
+            String orderRef = "MSDEE_" + System.currentTimeMillis();
 
-            double newTotalSpent = user.getTotalSpent() + totalAmount;
-            userDAO.updateMembership(userId, newTotalSpent);
+            String baseUrl = request.getScheme() + "://"
+                    + request.getServerName() + ":"
+                    + request.getServerPort()
+                    + request.getContextPath();
 
-            session.setAttribute("totalSpent", newTotalSpent);
+            String returnUrl = baseUrl + "/payment-return";
+            String callbackUrl = baseUrl + "/payment-callback";
 
-            response.sendRedirect(request.getContextPath() + "/profile?checkout=success");
+            String billCode = createToyyibPayBill(
+                    orderRef,
+                    fullName,
+                    email,
+                    phone,
+                    amountInCent,
+                    returnUrl,
+                    callbackUrl
+            );
+
+            if (billCode == null || billCode.trim().isEmpty()) {
+                response.sendRedirect(request.getContextPath() + CART_PAGE + "?error=toyyibpay_failed");
+                return;
+            }
+
+            saveOrder(userId, orderRef, totalAmount, billCode);
+
+            response.sendRedirect(TOYYIBPAY_PAYMENT_URL + billCode);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/pages/users/checkout.jsp?error=1");
+            response.sendRedirect(request.getContextPath() + CART_PAGE + "?error=checkout_failed");
         }
+    }
+
+    private String createToyyibPayBill(
+            String orderRef,
+            String fullName,
+            String email,
+            String phone,
+            int amountInCent,
+            String returnUrl,
+            String callbackUrl) throws IOException {
+
+        String data =
+                "userSecretKey=" + encode(SECRET_KEY)
+                + "&categoryCode=" + encode(CATEGORY_CODE)
+                + "&billName=" + encode("Ms. Dee Order")
+                + "&billDescription=" + encode("Payment for order " + orderRef)
+                + "&billPriceSetting=1"
+                + "&billPayorInfo=1"
+                + "&billAmount=" + amountInCent
+                + "&billReturnUrl=" + encode(returnUrl)
+                + "&billCallbackUrl=" + encode(callbackUrl)
+                + "&billExternalReferenceNo=" + encode(orderRef)
+                + "&billTo=" + encode(fullName)
+                + "&billEmail=" + encode(email)
+                + "&billPhone=" + encode(phone)
+                + "&billSplitPayment=0"
+                + "&billSplitPaymentArgs="
+                + "&billPaymentChannel=0"
+                + "&billContentEmail=" + encode("Thank you for shopping with Ms. Dee.")
+                + "&billChargeToCustomer=1";
+
+        URL url = new URL(TOYYIBPAY_API_URL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        conn.setDoOutput(true);
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(data.getBytes("UTF-8"));
+        }
+
+        StringBuilder result = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(conn.getInputStream(), "UTF-8"))) {
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                result.append(line);
+            }
+        }
+
+        String apiResponse = result.toString();
+
+        System.out.println("ToyyibPay Response: " + apiResponse);
+
+        if (apiResponse.contains("\"BillCode\"")) {
+            int start = apiResponse.indexOf("\"BillCode\":\"") + 12;
+            int end = apiResponse.indexOf("\"", start);
+
+            if (end > start) {
+                return apiResponse.substring(start, end);
+            }
+        }
+
+        return null;
+    }
+
+    private int saveOrder(int userId, String orderRef, double totalAmount, String billCode)
+            throws Exception {
+
+        String sql =
+                "INSERT INTO orders "
+                + "(userId, orderRef, totalAmount, paymentStatus, billCode, orderStatus) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setInt(1, userId);
+            ps.setString(2, orderRef);
+            ps.setDouble(3, totalAmount);
+            ps.setString(4, "Pending");
+            ps.setString(5, billCode);
+            ps.setString(6, "Processing");
+
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private String encode(String value) throws UnsupportedEncodingException {
+        return URLEncoder.encode(value, "UTF-8");
     }
 }

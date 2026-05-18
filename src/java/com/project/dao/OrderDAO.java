@@ -1,332 +1,150 @@
 package com.project.dao;
 
-import com.project.model.CartItem;
 import com.project.model.Order;
 import com.project.model.OrderItem;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAO {
 
-    // =========================
-    // CREATE ORDER
-    // =========================
-    public int createOrder(int userId,
-                           double totalAmount,
-                           List<CartItem> cartItems) {
+    public List<Order> getOrdersByUserId(int userId) {
 
-        String orderSQL =
-        "INSERT INTO orders(user_id,total_amount,order_status,order_date) "
-      + "VALUES(?,?,?,NOW())";
+        List<Order> orders = new ArrayList<>();
 
-        String itemSQL =
-        "INSERT INTO order_items(order_id,product_id,quantity,price) "
-      + "VALUES(?,?,?,?)";
+        String sql =
+                "SELECT * FROM orders "
+                + "WHERE userId = ? "
+                + "ORDER BY createdAt DESC";
 
-        Connection conn = null;
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
+            ps.setInt(1, userId);
 
-            conn = DBConnection.getConnection();
-            conn.setAutoCommit(false);
+            try (ResultSet rs = ps.executeQuery()) {
 
-            int orderId = 0;
+                while (rs.next()) {
+                    Order order = new Order();
 
-            PreparedStatement orderPs =
-                    conn.prepareStatement(
-                            orderSQL,
-                            Statement.RETURN_GENERATED_KEYS
-                    );
+                    order.setOrderId(rs.getInt("orderId"));
+                    order.setUserId(rs.getInt("userId"));
+                    order.setOrderRef(rs.getString("orderRef"));
+                    order.setTotalAmount(rs.getDouble("totalAmount"));
+                    order.setPaymentStatus(rs.getString("paymentStatus"));
+                    order.setBillCode(rs.getString("billCode"));
+                    order.setOrderStatus(rs.getString("orderStatus"));
+                    order.setCreatedAt(rs.getTimestamp("createdAt"));
 
-            orderPs.setInt(1, userId);
-            orderPs.setDouble(2, totalAmount);
-            orderPs.setString(3, "Processing");
-
-            orderPs.executeUpdate();
-
-            ResultSet keys = orderPs.getGeneratedKeys();
-
-            if (keys.next()) {
-                orderId = keys.getInt(1);
+                    orders.add(order);
+                }
             }
-
-            for (CartItem item : cartItems) {
-
-                PreparedStatement itemPs =
-                        conn.prepareStatement(itemSQL);
-
-                itemPs.setInt(1, orderId);
-                itemPs.setInt(2, item.getProductId());
-                itemPs.setInt(3, item.getQuantity());
-                itemPs.setDouble(4, item.getPrice());
-
-                itemPs.executeUpdate();
-
-                // reduce stock
-                PreparedStatement stockPs =
-                        conn.prepareStatement(
-                                "UPDATE products "
-                              + "SET stock_quantity=stock_quantity-? "
-                              + "WHERE product_id=?"
-                        );
-
-                stockPs.setInt(1,
-                        item.getQuantity());
-
-                stockPs.setInt(2,
-                        item.getProductId());
-
-                stockPs.executeUpdate();
-            }
-
-            conn.commit();
-
-            return orderId;
 
         } catch (Exception e) {
-
-            e.printStackTrace();
-
-            try {
-                if (conn != null)
-                    conn.rollback();
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-        } finally {
-
-            try {
-
-                if (conn != null) {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        return 0;
-    }
-
-
-    // =========================
-    // USER ORDERS
-    // =========================
-    public List<Order> getOrdersByUserId(int userId){
-
-        List<Order> orders =
-                new ArrayList<>();
-
-        String sql =
-        "SELECT * FROM orders "
-      + "WHERE user_id=? "
-      + "ORDER BY order_date DESC";
-
-        try(Connection conn =
-                    DBConnection.getConnection();
-
-            PreparedStatement ps =
-                    conn.prepareStatement(sql)) {
-
-            ps.setInt(1,userId);
-
-            ResultSet rs =
-                    ps.executeQuery();
-
-            while(rs.next()){
-
-                Order order =
-                        new Order();
-
-                order.setOrderId(
-                        rs.getInt("order_id"));
-
-                order.setUserId(
-                        rs.getInt("user_id"));
-
-                order.setTotalAmount(
-                        rs.getDouble(
-                                "total_amount"));
-
-                order.setOrderStatus(
-                        rs.getString(
-                                "order_status"));
-
-                order.setOrderDate(
-                        rs.getTimestamp(
-                                "order_date"));
-
-                orders.add(order);
-            }
-
-        }catch(Exception e){
             e.printStackTrace();
         }
 
         return orders;
     }
 
+    public List<Order> getAllOrders() {
 
-    // =========================
-    // ADMIN VIEW ALL ORDERS
-    // =========================
-    public List<Order> getAllOrders(){
-
-        List<Order> orders =
-                new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
 
         String sql =
-        "SELECT * FROM orders "
-      + "ORDER BY order_date DESC";
+                "SELECT o.*, u.full_name, u.email "
+                + "FROM orders o "
+                + "LEFT JOIN users u ON o.userId = u.user_id "
+                + "ORDER BY o.createdAt DESC";
 
-        try(Connection conn =
-                    DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-            PreparedStatement ps =
-                    conn.prepareStatement(sql);
+            while (rs.next()) {
+                Order order = new Order();
 
-            ResultSet rs =
-                    ps.executeQuery()){
+                order.setOrderId(rs.getInt("orderId"));
+                order.setUserId(rs.getInt("userId"));
+                order.setOrderRef(rs.getString("orderRef"));
+                order.setTotalAmount(rs.getDouble("totalAmount"));
+                order.setPaymentStatus(rs.getString("paymentStatus"));
+                order.setBillCode(rs.getString("billCode"));
+                order.setOrderStatus(rs.getString("orderStatus"));
+                order.setCreatedAt(rs.getTimestamp("createdAt"));
 
-            while(rs.next()){
-
-                Order order =
-                        new Order();
-
-                order.setOrderId(
-                        rs.getInt("order_id"));
-
-                order.setUserId(
-                        rs.getInt("user_id"));
-
-                order.setTotalAmount(
-                        rs.getDouble(
-                                "total_amount"));
-
-                order.setOrderStatus(
-                        rs.getString(
-                                "order_status"));
-
-                order.setOrderDate(
-                        rs.getTimestamp(
-                                "order_date"));
+                order.setFullName(rs.getString("full_name"));
+                order.setEmail(rs.getString("email"));
 
                 orders.add(order);
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return orders;
     }
 
-
-    // =========================
-    // UPDATE STATUS
-    // =========================
-    public boolean updateStatus(
-            int orderId,
-            String status){
+    public boolean updateStatus(int orderId, String status) {
 
         String sql =
-        "UPDATE orders "
-      + "SET order_status=? "
-      + "WHERE order_id=?";
+                "UPDATE orders "
+                + "SET orderStatus = ? "
+                + "WHERE orderId = ?";
 
-        try(Connection conn =
-                    DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            PreparedStatement ps =
-                    conn.prepareStatement(sql)){
+            ps.setString(1, status);
+            ps.setInt(2, orderId);
 
-            ps.setString(1,status);
-            ps.setInt(2,orderId);
+            return ps.executeUpdate() > 0;
 
-            return ps.executeUpdate()>0;
-
-        }catch(Exception e){
-
+        } catch (Exception e) {
             e.printStackTrace();
-
         }
 
         return false;
     }
 
+    public List<OrderItem> getOrderItems(int orderId) {
 
-    // =========================
-    // ORDER ITEMS
-    // =========================
-    public List<OrderItem>
-        getOrderItems(int orderId){
-
-        List<OrderItem> items =
-                new ArrayList<>();
+        List<OrderItem> items = new ArrayList<>();
 
         String sql =
-        "SELECT oi.*, "
-      + "p.product_name "
-      + "FROM order_items oi "
-      + "JOIN products p "
-      + "ON oi.product_id=p.product_id "
-      + "WHERE order_id=?";
+                "SELECT oi.*, p.product_name "
+                + "FROM order_items oi "
+                + "JOIN products p ON oi.product_id = p.product_id "
+                + "WHERE oi.order_id = ?";
 
-        try(Connection conn =
-                    DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            PreparedStatement ps =
-                    conn.prepareStatement(sql)){
+            ps.setInt(1, orderId);
 
-            ps.setInt(1,orderId);
+            try (ResultSet rs = ps.executeQuery()) {
 
-            ResultSet rs =
-                    ps.executeQuery();
+                while (rs.next()) {
+                    OrderItem item = new OrderItem();
 
-            while(rs.next()){
+                    item.setOrderItemId(rs.getInt("order_item_id"));
+                    item.setOrderId(rs.getInt("order_id"));
+                    item.setProductId(rs.getInt("product_id"));
+                    item.setProductName(rs.getString("product_name"));
+                    item.setQuantity(rs.getInt("quantity"));
+                    item.setPrice(rs.getDouble("price"));
 
-                OrderItem item =
-                        new OrderItem();
-
-                item.setOrderItemId(
-                        rs.getInt(
-                                "order_item_id"));
-
-                item.setOrderId(
-                        rs.getInt(
-                                "order_id"));
-
-                item.setProductId(
-                        rs.getInt(
-                                "product_id"));
-
-                item.setProductName(
-                        rs.getString(
-                                "product_name"));
-
-                item.setQuantity(
-                        rs.getInt(
-                                "quantity"));
-
-                item.setPrice(
-                        rs.getDouble(
-                                "price"));
-
-                items.add(item);
+                    items.add(item);
+                }
             }
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return items;
     }
-
 }
