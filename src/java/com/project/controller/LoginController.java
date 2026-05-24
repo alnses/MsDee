@@ -13,7 +13,8 @@ import javax.servlet.http.*;
 public class LoginController extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException, IOException {
 
         String email = request.getParameter("email");
@@ -21,10 +22,18 @@ public class LoginController extends HttpServlet {
         String selectedRole = request.getParameter("role");
 
         try {
+
             Connection conn = DBConnection.getConnection();
 
-            String sql = "SELECT * FROM users WHERE email = ? AND password = ? AND role = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+            String sql =
+                    "SELECT * FROM users "
+                    + "WHERE email = ? "
+                    + "AND password = ? "
+                    + "AND role = ?";
+
+            PreparedStatement ps =
+                    conn.prepareStatement(sql);
+
             ps.setString(1, email);
             ps.setString(2, password);
             ps.setString(3, selectedRole);
@@ -33,36 +42,100 @@ public class LoginController extends HttpServlet {
 
             if (rs.next()) {
 
-                HttpSession session = request.getSession();
+                HttpSession session =
+                        request.getSession();
 
-                session.setAttribute("userId", rs.getInt("user_id"));
-                session.setAttribute("fullName", rs.getString("full_name"));
-                session.setAttribute("email", rs.getString("email"));
-                session.setAttribute("role", rs.getString("role"));
-                session.setAttribute("membershipTier", rs.getString("membership_tier"));
-                session.setAttribute("totalSpent", rs.getDouble("total_spent"));
-                session.setAttribute("discount", rs.getInt("discount"));
-                session.setAttribute("memberSince", rs.getString("member_since"));
+                // IMPORTANT
+                session.setAttribute(
+                        "user_id",
+                        rs.getInt("user_id")
+                );
 
-                if ("admin".equalsIgnoreCase(rs.getString("role"))) {
-                    response.sendRedirect(request.getContextPath() + "/pages/admin/adminDashboard.jsp");
+                // optional backup
+                session.setAttribute(
+                        "userId",
+                        rs.getInt("user_id")
+                );
+
+                session.setAttribute(
+                        "fullName",
+                        rs.getString("full_name")
+                );
+
+                session.setAttribute(
+                        "email",
+                        rs.getString("email")
+                );
+
+                session.setAttribute(
+                        "role",
+                        rs.getString("role")
+                );
+
+                session.setAttribute(
+                        "membershipTier",
+                        rs.getString("membership_tier")
+                );
+
+                session.setAttribute(
+                        "totalSpent",
+                        rs.getDouble("total_spent")
+                );
+
+                session.setAttribute(
+                        "discount",
+                        rs.getInt("discount")
+                );
+
+                session.setAttribute(
+                        "memberSince",
+                        rs.getString("member_since")
+                );
+
+                if ("admin".equalsIgnoreCase(
+                        rs.getString("role"))) {
+
+                    response.sendRedirect(
+                            request.getContextPath()
+                            + "/pages/admin/adminDashboard.jsp"
+                    );
+
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/pages/users/homepage.jsp");
+
+                    response.sendRedirect(
+                            request.getContextPath()
+                            + "/pages/users/homepage.jsp"
+                    );
                 }
 
             } else {
+
                 if ("admin".equalsIgnoreCase(selectedRole)) {
-                    response.sendRedirect(request.getContextPath() + "/pages/admin/adminLogin.jsp?error=1");
+
+                    response.sendRedirect(
+                            request.getContextPath()
+                            + "/pages/admin/adminLogin.jsp?error=1"
+                    );
+
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp?error=1");
+
+                    response.sendRedirect(
+                            request.getContextPath()
+                            + "/pages/users/login.jsp?error=1"
+                    );
                 }
             }
 
             conn.close();
 
         } catch (Exception e) {
+
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp?error=1");
+
+            response.sendRedirect(
+                    request.getContextPath()
+                    + "/pages/users/login.jsp?error=1"
+            );
         }
     }
 }

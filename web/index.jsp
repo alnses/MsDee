@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%
-    response.sendRedirect("pages/users/register.jsp");
+    response.sendRedirect("pages/users/homepage.jsp");
 %>
