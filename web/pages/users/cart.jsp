@@ -1,182 +1,179 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Cart | Ms. Dee</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=70">
-</head>
-<body>
+    <head>
+        <title>Cart | Ms. Dee</title>
 
-<jsp:include page="../../partials/header.jsp"/>
+        <link rel="stylesheet"
+              href="${pageContext.request.contextPath}/assets/css/style.css?v=60">
+    </head>
 
-<div class="cart-container">
-    <h1>Shopping Cart</h1>
+    <body>
 
-    <div id="cartItems" class="cart-items"></div>
+        <jsp:include page="../../partials/header.jsp"/>
 
-    <div class="cart-summary">
-        <h2>Order Summary</h2>
+        <div class="cart-container">
 
-        <div class="summary-row">
-            <span>Total Items</span>
-            <strong id="totalItems">0</strong>
-        </div>
+            <h1>Shopping Cart</h1>
 
-        <div class="summary-row">
-            <span>Total Price</span>
-            <strong id="totalPrice">RM 0.00</strong>
-        </div>
+            <div id="cartItems"></div>
 
-        <form id="checkoutForm"
-              action="${pageContext.request.contextPath}/checkout"
-              method="post">
+            <div class="cart-summary">
 
-            <input type="hidden" name="totalAmount" id="totalAmountInput">
-            <input type="hidden" name="cartData" id="cartDataInput">
+                <h3>Cart Summary</h3>
 
-            <button type="submit" class="checkout-btn">
-                Pay with ToyyibPay
-            </button>
-        </form>
-
-        <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
-    </div>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script>
-    function loadCart() {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const cartItems = document.getElementById("cartItems");
-
-        cartItems.innerHTML = "";
-
-        if (cart.length === 0) {
-            cartItems.innerHTML = `
-                <div class="empty-cart">
-                    <h2>Your cart is empty</h2>
-                    <p>Add some products from the shop page.</p>
-                    <a href="${pageContext.request.contextPath}/pages/users/shop.jsp">Go to Shop</a>
+                <div class="summary-row">
+                    <span>Total:</span>
+                    <span id="cartTotal">RM 0.00</span>
                 </div>
-            `;
 
-            updateSummary();
-            updateCartCount();
-            return;
-        }
+                <form action="${pageContext.request.contextPath}/checkout"
+                      method="post"
+                      onsubmit="prepareCheckoutData()">
 
-        cart.forEach((item, index) => {
-            cartItems.innerHTML += `
-                <div class="cart-card">
-                    <div class="cart-product-img">
-                        <img src="\${item.image}" alt="\${item.name}">
-                    </div>
+                    <input type="hidden"
+                           name="totalAmount"
+                           id="totalAmountInput">
 
-                    <div class="cart-product-info">
-                        <h3>\${item.name}</h3>
-                        <p>RM \${Number(item.price).toFixed(2)}</p>
-                    </div>
+                    <input type="hidden"
+                           name="cartData"
+                           id="cartDataInput">
 
-                    <div class="quantity-control">
-                        <button type="button" onclick="decreaseQty(\${index})">-</button>
-                        <span>\${item.quantity}</span>
-                        <button type="button" onclick="increaseQty(\${index})">+</button>
-                    </div>
-
-                    <div class="cart-item-total">
-                        RM \${(Number(item.price) * Number(item.quantity)).toFixed(2)}
-                    </div>
-
-                    <button type="button" class="remove-btn" onclick="removeItem(\${index})">
-                        Remove
+                    <button type="submit" class="main-btn">
+                        Proceed To Checkout
                     </button>
-                </div>
-            `;
-        });
 
-        updateSummary();
-        updateCartCount();
-    }
+                </form>
 
-    function increaseQty(index) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart[index].quantity += 1;
-        localStorage.setItem("cart", JSON.stringify(cart));
-        loadCart();
-    }
+            </div>
 
-    function decreaseQty(index) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        </div>
 
-        if (cart[index].quantity > 1) {
-            cart[index].quantity -= 1;
-        } else {
-            cart.splice(index, 1);
-        }
+        <script>
 
-        localStorage.setItem("cart", JSON.stringify(cart));
-        loadCart();
-    }
+            function loadCart() {
 
-    function removeItem(index) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        loadCart();
-        showToast("Item removed from cart");
-    }
+                let cart =
+                        JSON.parse(localStorage.getItem("cart")) || [];
 
-    function clearCart() {
-        localStorage.removeItem("cart");
-        loadCart();
-        showToast("Cart cleared");
-    }
+                let cartContainer =
+                        document.getElementById("cartItems");
 
-    function updateSummary() {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                let total = 0;
 
-        let totalItems = cart.reduce((total, item) => total + Number(item.quantity), 0);
-        let totalPrice = cart.reduce((total, item) => total + (Number(item.price) * Number(item.quantity)), 0);
+                cartContainer.innerHTML = "";
 
-        document.getElementById("totalItems").innerText = totalItems;
-        document.getElementById("totalPrice").innerText = "RM " + totalPrice.toFixed(2);
+                if (cart.length === 0) {
 
-        document.getElementById("totalAmountInput").value = totalPrice.toFixed(2);
-        document.getElementById("cartDataInput").value = JSON.stringify(cart);
-    }
+                    cartContainer.innerHTML =
+                            "<p>Your cart is empty.</p>";
 
-    function updateCartCount() {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let totalItems = cart.reduce((total, item) => total + Number(item.quantity), 0);
+                    document.getElementById("cartTotal").innerText =
+                            "RM 0.00";
 
-        const count = document.querySelector(".cart-count");
-        if (count) {
-            count.innerText = totalItems;
-        }
-    }
+                    return;
+                }
 
-    document.getElementById("checkoutForm").addEventListener("submit", function (e) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                cart.forEach((item, index) => {
 
-        if (cart.length === 0) {
-            e.preventDefault();
-            showToast("Your cart is empty");
-        }
-    });
+                    let subtotal =
+                            item.price * item.quantity;
 
-    function showToast(message) {
-        const t = document.getElementById("toast");
-        t.innerText = message;
-        t.style.display = "block";
+                    total += subtotal;
 
-        setTimeout(() => {
-            t.style.display = "none";
-        }, 2500);
-    }
+                    let productHTML = ""
 
-    loadCart();
-</script>
+                            + "<div class='cart-item'>"
 
-</body>
+                            + "<img src='" + item.image + "' class='cart-image'>"
+
+                            + "<div class='cart-details'>"
+
+                            + "<h3>" + item.name + "</h3>"
+
+                            + "<p>RM " + item.price.toFixed(2) + "</p>"
+
+                            + "<div class='qty-controls'>"
+
+                            + "<button onclick='changeQty(" + index + ", -1)'>-</button>"
+
+                            + "<span>" + item.quantity + "</span>"
+
+                            + "<button onclick='changeQty(" + index + ", 1)'>+</button>"
+
+                            + "</div>"
+
+                            + "<p>Subtotal: RM "
+                            + subtotal.toFixed(2)
+                            + "</p>"
+
+                            + "<button onclick='removeItem(" + index + ")' class='remove-btn'>"
+
+                            + "Remove"
+
+                            + "</button>"
+
+                            + "</div>"
+
+                            + "</div>";
+
+                    cartContainer.innerHTML += productHTML;
+                });
+
+                document.getElementById("cartTotal").innerText =
+                        "RM " + total.toFixed(2);
+
+                document.getElementById("totalAmountInput").value =
+                        total.toFixed(2);
+            }
+
+            function changeQty(index, change) {
+
+                let cart =
+                        JSON.parse(localStorage.getItem("cart")) || [];
+
+                cart[index].quantity += change;
+
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+
+                localStorage.setItem(
+                        "cart",
+                        JSON.stringify(cart)
+                );
+
+                loadCart();
+            }
+
+            function removeItem(index) {
+
+                let cart =
+                        JSON.parse(localStorage.getItem("cart")) || [];
+
+                cart.splice(index, 1);
+
+                localStorage.setItem(
+                        "cart",
+                        JSON.stringify(cart)
+                );
+
+                loadCart();
+            }
+
+            function prepareCheckoutData() {
+
+                let cart =
+                        JSON.parse(localStorage.getItem("cart")) || [];
+
+                document.getElementById("cartDataInput").value =
+                        JSON.stringify(cart);
+            }
+
+            loadCart();
+
+        </script>
+
+    </body>
 </html>

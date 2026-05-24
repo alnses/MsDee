@@ -6,14 +6,20 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 @WebFilter({
-    "/pages/account.jsp",
-    "/pages/membership.jsp",
-    "/pages/profile.jsp"
+    "/pages/users/account.jsp",
+    "/pages/users/membership.jsp",
+    "/pages/users/profile.jsp",
+    "/pages/users/orders.jsp",
+    "/pages/users/checkout.jsp",
+    "/checkout"
 })
 public class AuthFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain)
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
@@ -21,10 +27,20 @@ public class AuthFilter implements Filter {
 
         HttpSession session = req.getSession(false);
 
-        if (session == null || session.getAttribute("fullName") == null) {
-            res.sendRedirect(req.getContextPath() + "/pages/login.jsp");
-        } else {
-            chain.doFilter(request, response);
+        boolean loggedIn =
+                session != null &&
+                session.getAttribute("user_id") != null;
+
+        if (!loggedIn) {
+
+            res.sendRedirect(
+                    req.getContextPath()
+                    + "/pages/users/login.jsp"
+            );
+
+            return;
         }
+
+        chain.doFilter(request, response);
     }
 }
