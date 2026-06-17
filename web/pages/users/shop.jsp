@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Shop | Ms. Dee</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=31">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=63">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
     <body>
@@ -16,12 +16,12 @@
             <aside class="shop-sidebar">
                 <h2>Categories</h2>
                 <button class="category-btn active" onclick="filterProducts('all', this)">All Products</button>
-                <button class="category-btn" onclick="filterProducts('Kitchen', this)">🍳 Kitchen</button>
-                <button class="category-btn" onclick="filterProducts('Cleaning', this)">🧹 Cleaning</button>
-                <button class="category-btn" onclick="filterProducts('Cooling', this)">❄️ Cooling</button>
-                <button class="category-btn" onclick="filterProducts('Heating', this)">🔥 Heating</button>
-                <button class="category-btn" onclick="filterProducts('Laundry', this)">🧺 Laundry</button>
-                <button class="category-btn" onclick="filterProducts('Electrical', this)">🔌 Electrical</button>
+                <button class="category-btn" onclick="filterProducts('Kitchen', this)">ðŸ³ Kitchen</button>
+                <button class="category-btn" onclick="filterProducts('Cleaning', this)">ðŸ§¹ Cleaning</button>
+                <button class="category-btn" onclick="filterProducts('Cooling', this)">â„ï¸ Cooling</button>
+                <button class="category-btn" onclick="filterProducts('Heating', this)">ðŸ”¥ Heating</button>
+                <button class="category-btn" onclick="filterProducts('Laundry', this)">ðŸ§º Laundry</button>
+                <button class="category-btn" onclick="filterProducts('Electrical', this)">ðŸ”Œ Electrical</button>
             </aside>
 
             <main class="shop-main">
@@ -224,15 +224,153 @@
         </div>
 
         <div id="toast" class="toast"></div>
+        <div id="quickViewModal" class="quick-view-overlay" onclick="closeQuickView(event)">
+            <div class="quick-view-modal">
+                <button type="button" class="quick-view-close" onclick="hideQuickView()">&times;</button>
 
-        <script>
+                <div class="quick-view-image">
+                    <img id="quickViewImage" src="" alt="">
+                </div>
+
+                <div class="quick-view-info">
+                    <p class="quick-view-type" id="quickViewType"></p>
+                    <h2 id="quickViewName"></h2>
+                    <h3 id="quickViewPrice"></h3>
+                    <p id="quickViewDescription"></p>
+
+                    <div class="quick-view-specs">
+                        <h4>Product Specification</h4>
+                        <p id="quickViewSpecs"></p>
+                    </div>
+
+                    <div class="quick-view-actions">
+                        <div class="quick-view-qty">
+                            <button type="button" onclick="changeQuickViewQty(-1)">-</button>
+                            <span id="quickViewQty">1</span>
+                            <button type="button" onclick="changeQuickViewQty(1)">+</button>
+                        </div>
+
+                        <button type="button" class="quick-view-add" onclick="confirmQuickViewAdd()">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <script>
+            const productDetails = {
+                "Air Cooler": {
+                    type: "Cooling Appliance",
+                    model: "MSD-AC189 Portable Air Cooler",
+                    description: "Portable air cooler for comfortable daily cooling in bedrooms, study rooms, and living areas.",
+                    specs: "3-speed airflow, portable wheels, easy-fill water tank, energy-saving cooling mode."
+                },
+                "Blender": {
+                    type: "Kitchen Appliance",
+                    model: "MSD-BL110 Multi-Purpose Blender",
+                    description: "Compact blender for smoothies, sauces, and quick kitchen preparation.",
+                    specs: "Stainless steel blades, detachable jar, pulse control, easy-clean parts."
+                },
+                "Rice Cooker": {
+                    type: "Kitchen Appliance",
+                    model: "MSD-RC072 Daily Rice Cooker",
+                    description: "Simple everyday rice cooker for small family meals and quick cooking.",
+                    specs: "Cook and warm functions, non-stick inner pot, compact body, safety lid."
+                },
+                "Electric Kettle": {
+                    type: "Kitchen Appliance",
+                    model: "MSD-EK050 Fast Boil Kettle",
+                    description: "Fast electric kettle for tea, coffee, and instant meals.",
+                    specs: "Auto shut-off, heat-resistant handle, water level indicator, cordless serving."
+                },
+                "Air Fryer": {
+                    type: "Kitchen Appliance",
+                    model: "MSD-AF200 Compact Air Fryer",
+                    description: "Air fryer for crispy meals with less oil and easy everyday cooking.",
+                    specs: "Adjustable temperature, removable basket, timer control, non-stick tray."
+                },
+                "Microwave Oven": {
+                    type: "Kitchen Appliance",
+                    model: "MSD-MW250 Digital Microwave Oven",
+                    description: "Convenient microwave oven for reheating, defrosting, and quick meals.",
+                    specs: "Multiple power levels, timer control, defrost mode, easy-clean interior."
+                },
+                "Bread Toaster": {
+                    type: "Kitchen Appliance",
+                    model: "MSD-BT056 Two-Slice Toaster",
+                    description: "Two-slice toaster for quick breakfasts and evenly toasted bread.",
+                    specs: "Browning control, cancel function, crumb tray, compact countertop design."
+                },
+                "Vacuum Cleaner": {
+                    type: "Cleaning Appliance",
+                    model: "MSD-VC160 Home Vacuum Cleaner",
+                    description: "Vacuum cleaner for everyday floor, carpet, and dust cleaning.",
+                    specs: "Strong suction, washable filter, multi-surface nozzle, easy dust disposal."
+                },
+                "Steam Mop": {
+                    type: "Cleaning Appliance",
+                    model: "MSD-SM130 Floor Steam Mop",
+                    description: "Steam mop for cleaner hard floors with less chemical use.",
+                    specs: "Fast heat-up, reusable mop pad, swivel head, lightweight handle."
+                },
+                "Table Fan": {
+                    type: "Cooling Appliance",
+                    model: "MSD-TF060 Table Fan",
+                    description: "Compact table fan for personal cooling at desks and small rooms.",
+                    specs: "3 fan speeds, oscillation mode, stable base, adjustable tilt."
+                },
+                "Stand Fan": {
+                    type: "Cooling Appliance",
+                    model: "MSD-SF090 Adjustable Stand Fan",
+                    description: "Adjustable stand fan for wider airflow around bedrooms and living rooms.",
+                    specs: "Height adjustment, oscillation, 3-speed control, wide fan guard."
+                },
+                "Steam Iron": {
+                    type: "Heating Appliance",
+                    model: "MSD-SI070 Steam Iron",
+                    description: "Steam iron for smoother clothes and quick wrinkle removal.",
+                    specs: "Steam burst, non-stick soleplate, adjustable temperature, water spray."
+                },
+                "Washing Machine": {
+                    type: "Laundry Appliance",
+                    model: "MSD-WM700 Washing Machine",
+                    description: "Washing machine for reliable daily laundry care at home.",
+                    specs: "Multiple wash programs, large capacity drum, spin dry mode, water-saving cycle."
+                },
+                "Extension Plug": {
+                    type: "Electrical Accessory",
+                    model: "MSD-EP030 Extension Plug",
+                    description: "Extension plug for safely powering multiple household devices.",
+                    specs: "Multiple sockets, durable cable, safety switch, compact layout."
+                },
+                "LED Desk Lamp": {
+                    type: "Electrical Appliance",
+                    model: "MSD-DL040 LED Desk Lamp",
+                    description: "LED desk lamp for study, work, and bedside lighting.",
+                    specs: "Energy-saving LED, adjustable neck, stable base, soft light output."
+                }
+            };
+
+            let quickViewProduct = null;
+            let quickViewQuantity = 1;
+
             function filterProducts(cat, btn) {
                 document.querySelectorAll('.shop-product-card').forEach(card => {
                     card.style.display = (cat === 'all' || card.dataset.category === cat) ? 'block' : 'none';
                 });
 
                 document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+
+                if (btn) {
+                    btn.classList.add('active');
+                } else {
+                    document.querySelectorAll('.category-btn').forEach(b => {
+                        if ((cat === 'all' && b.textContent.includes('All Products')) || b.textContent.includes(cat)) {
+                            b.classList.add('active');
+                        }
+                    });
+                }
 
                 document.querySelector('.shop-header h1').innerText =
                         cat === 'all' ? 'All Products' : cat + ' Products';
@@ -254,29 +392,91 @@
             }
 
             function addToCart(name, price, image) {
-                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                openQuickView(name, price, image);
+            }
 
+            function openQuickView(name, price, image) {
+                const details = productDetails[name] || {
+                    type: "Home Appliance",
+                    model: "Ms. Dee Standard Model",
+                    description: "Useful home appliance for everyday household needs.",
+                    specs: "Practical design, easy to use, suitable for daily home use."
+                };
+
+                quickViewProduct = { name: name, price: price, image: image };
+                quickViewQuantity = 1;
+
+                document.getElementById('quickViewImage').src = image;
+                document.getElementById('quickViewImage').alt = name;
+                document.getElementById('quickViewType').innerText = details.type + ' | ' + details.model;
+                document.getElementById('quickViewName').innerText = name;
+                document.getElementById('quickViewPrice').innerText = 'RM ' + price.toFixed(2);
+                document.getElementById('quickViewDescription').innerText = details.description;
+                document.getElementById('quickViewSpecs').innerText = details.specs;
+                document.getElementById('quickViewQty').innerText = quickViewQuantity;
+                document.getElementById('quickViewModal').classList.add('show');
+            }
+
+            function hideQuickView() {
+                document.getElementById('quickViewModal').classList.remove('show');
+            }
+
+            function closeQuickView(event) {
+                if (event.target.id === 'quickViewModal') {
+                    hideQuickView();
+                }
+            }
+
+            function changeQuickViewQty(change) {
+                quickViewQuantity += change;
+
+                if (quickViewQuantity < 1) {
+                    quickViewQuantity = 1;
+                }
+
+                document.getElementById('quickViewQty').innerText = quickViewQuantity;
+            }
+
+            function confirmQuickViewAdd() {
+                if (!quickViewProduct) {
+                    return;
+                }
+
+                addCartItem(
+                        quickViewProduct.name,
+                        quickViewProduct.price,
+                        quickViewProduct.image,
+                        quickViewQuantity
+                );
+
+                hideQuickView();
+                showToast(quickViewProduct.name + ' added to cart!');
+            }
+
+            function addCartItem(name, price, image, quantity) {
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
                 let existingItem = cart.find(item => item.name === name);
 
                 if (existingItem) {
-                    existingItem.quantity += 1;
+                    existingItem.quantity += quantity;
+                    existingItem.selected = true;
                 } else {
                     cart.push({
                         name: name,
                         price: price,
                         image: image,
-                        quantity: 1
+                        quantity: quantity,
+                        selected: true
                     });
                 }
 
                 localStorage.setItem("cart", JSON.stringify(cart));
                 updateCartCount();
-                showToast(name + " added to cart!");
             }
 
             function updateCartCount() {
                 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                let totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                let totalItems = cart.reduce((total, item) => total + (parseInt(item.quantity) || 0), 0);
 
                 const count = document.querySelector(".cart-count");
                 if (count) {
@@ -294,8 +494,17 @@
                 }, 2500);
             }
 
-            updateCartCount();
-        </script>
+            function applyCategoryFromUrl() {
+                const params = new URLSearchParams(window.location.search);
+                const category = params.get('category');
 
+                if (category) {
+                    filterProducts(category, null);
+                }
+            }
+
+            updateCartCount();
+            applyCategoryFromUrl();
+        </script>
     </body>
 </html>
