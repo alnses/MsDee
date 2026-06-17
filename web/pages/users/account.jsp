@@ -44,7 +44,7 @@
         <p><%= user.getEmail() %></p>
 
         <div class="member-tier">
-            ðŸ…
+            
             <h4><%= user.getMembershipTier() != null ? user.getMembershipTier() : "Bronze" %></h4>
         </div>
 
@@ -65,7 +65,7 @@
 
         <a href="${pageContext.request.contextPath}/profile" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">ðŸ‘¤</div>
+                <div class="icon"></div>
                 <h2>Profile</h2>
                 <p>Manage your personal information</p>
             </div>
@@ -73,7 +73,7 @@
 
         <a href="${pageContext.request.contextPath}/orders" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">ðŸ“¦</div>
+                <div class="icon"></div>
                 <h2>My Orders</h2>
                 <p>View order history</p>
             </div>
@@ -81,7 +81,7 @@
 
         <a href="${pageContext.request.contextPath}/pages/users/membership.jsp" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">â­</div>
+                <div class="icon"></div>
                 <h2>Membership</h2>
                 <p>View benefits and upgrade</p>
             </div>
@@ -89,7 +89,7 @@
 
         <a href="${pageContext.request.contextPath}/addresses" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">ðŸ“</div>
+                <div class="icon"></div>
                 <h2>Addresses</h2>
                 <p>Manage shipping addresses</p>
             </div>

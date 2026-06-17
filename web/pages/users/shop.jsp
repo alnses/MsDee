@@ -16,12 +16,12 @@
             <aside class="shop-sidebar">
                 <h2>Categories</h2>
                 <button class="category-btn active" onclick="filterProducts('all', this)">All Products</button>
-                <button class="category-btn" onclick="filterProducts('Kitchen', this)">ðŸ³ Kitchen</button>
-                <button class="category-btn" onclick="filterProducts('Cleaning', this)">ðŸ§¹ Cleaning</button>
-                <button class="category-btn" onclick="filterProducts('Cooling', this)">â„ï¸ Cooling</button>
-                <button class="category-btn" onclick="filterProducts('Heating', this)">ðŸ”¥ Heating</button>
-                <button class="category-btn" onclick="filterProducts('Laundry', this)">ðŸ§º Laundry</button>
-                <button class="category-btn" onclick="filterProducts('Electrical', this)">ðŸ”Œ Electrical</button>
+                <button class="category-btn" onclick="filterProducts('Kitchen', this)">Kitchen</button>
+                <button class="category-btn" onclick="filterProducts('Cleaning', this)">Cleaning</button>
+                <button class="category-btn" onclick="filterProducts('Cooling', this)">Cooling</button>
+                <button class="category-btn" onclick="filterProducts('Heating', this)">Heating</button>
+                <button class="category-btn" onclick="filterProducts('Laundry', this)">Laundry</button>
+                <button class="category-btn" onclick="filterProducts('Electrical', this)">Electrical</button>
             </aside>
 
             <main class="shop-main">

@@ -16,7 +16,7 @@
 
             if (name != null) {
         %>
-            <a href="${pageContext.request.contextPath}/pages/users/account.jsp">ðŸ‘¤ <%= name %></a>
+            <a href="${pageContext.request.contextPath}/pages/users/account.jsp"> <%= name %></a>
         <%
             } else {
         %>
@@ -26,7 +26,7 @@
         %>
 
         <a href="${pageContext.request.contextPath}/pages/users/cart.jsp" class="cart-btn">
-            ðŸ›’ Cart <span class="cart-count">0</span>
+             Cart <span class="cart-count">0</span>
         </a>
     </div>
 </nav>
