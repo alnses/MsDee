@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,8 +19,21 @@
 </div>
 
 <script>
-    localStorage.removeItem("cart");
+    const checkoutItems = JSON.parse(localStorage.getItem("checkoutItems")) || [];
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (checkoutItems.length > 0) {
+        const remainingCart = cart.filter(item =>
+            !checkoutItems.some(checkedOut =>
+                checkedOut.name === item.name
+                && checkedOut.price === item.price
+                && checkedOut.image === item.image
+            )
+        );
+        localStorage.setItem("cart", JSON.stringify(remainingCart));
+        localStorage.removeItem("checkoutItems");
+    } else {
+        localStorage.removeItem("cart");
+    }
 </script>
-
 </body>
 </html>

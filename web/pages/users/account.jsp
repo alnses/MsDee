@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.project.model.User" %>
 
 <%
@@ -44,7 +44,7 @@
         <p><%= user.getEmail() %></p>
 
         <div class="member-tier">
-            🏅
+            ðŸ…
             <h4><%= user.getMembershipTier() != null ? user.getMembershipTier() : "Bronze" %></h4>
         </div>
 
@@ -63,17 +63,17 @@
 
     <div class="grid">
 
-        <a href="${pageContext.request.contextPath}/pages/users/profile.jsp" style="text-decoration:none;color:inherit;">
+        <a href="${pageContext.request.contextPath}/profile" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">👤</div>
+                <div class="icon">ðŸ‘¤</div>
                 <h2>Profile</h2>
                 <p>Manage your personal information</p>
             </div>
         </a>
 
-        <a href="${pageContext.request.contextPath}/pages/users/orders.jsp" style="text-decoration:none;color:inherit;">
+        <a href="${pageContext.request.contextPath}/orders" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">📦</div>
+                <div class="icon">ðŸ“¦</div>
                 <h2>My Orders</h2>
                 <p>View order history</p>
             </div>
@@ -81,7 +81,7 @@
 
         <a href="${pageContext.request.contextPath}/pages/users/membership.jsp" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">⭐</div>
+                <div class="icon">â­</div>
                 <h2>Membership</h2>
                 <p>View benefits and upgrade</p>
             </div>
@@ -89,7 +89,7 @@
 
         <a href="${pageContext.request.contextPath}/addresses" style="text-decoration:none;color:inherit;">
             <div class="card menu-card">
-                <div class="icon">📍</div>
+                <div class="icon">ðŸ“</div>
                 <h2>Addresses</h2>
                 <p>Manage shipping addresses</p>
             </div>

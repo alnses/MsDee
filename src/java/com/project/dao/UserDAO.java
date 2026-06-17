@@ -1,5 +1,6 @@
 package com.project.dao;
 
+
 import com.project.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,5 +73,24 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public boolean updateProfile(int userId, String fullName, String email, String phone) {
+        String sql = "UPDATE users SET full_name = ?, email = ?, phone = ? WHERE user_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, fullName);
+            ps.setString(2, email);
+            ps.setString(3, phone);
+            ps.setInt(4, userId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
