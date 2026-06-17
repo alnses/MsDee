@@ -1,4 +1,5 @@
-﻿package com.project.controller;
+package com.project.controller;
+
 
 import com.project.dao.UserDAO;
 import com.project.model.User;
@@ -6,6 +7,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
+import com.project.dao.UserDAO;
 
 @WebServlet("/profile")
 public class ProfileController extends HttpServlet {
