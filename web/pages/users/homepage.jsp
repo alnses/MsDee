@@ -14,7 +14,10 @@
             <div class="home-hero-content">
                 <h1>Quality Home Appliances<br>for Modern Living</h1>
                 <p>Discover the best selection of kitchen, cleaning, and home comfort appliances</p>
-                <a href="${pageContext.request.contextPath}/pages/users/shop.jsp" class="shop-now-btn">Shop Now →</a>
+                <a href="${pageContext.request.contextPath}/products?category=all"
+                    class="shop-now-btn">
+                    Shop Now →
+                </a>
             </div>
         </section>
 
@@ -22,12 +25,29 @@
             <h2>Shop by Category</h2>
 
             <div class="category-grid">
-                <div class="category-card">🍳<h3>Kitchen</h3></div>
-                <div class="category-card">🧹<h3>Cleaning</h3></div>
-                <div class="category-card">❄️<h3>Cooling</h3></div>
-                <div class="category-card">🔥<h3>Heating</h3></div>
-                <div class="category-card">🧺<h3>Laundry</h3></div>
-                <div class="category-card">🔌<h3>Electrical</h3></div>
+                <a href="${pageContext.request.contextPath}/products?category=Kitchen" class="category-card">
+                    🍳<h3>Kitchen</h3>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/products?category=Cleaning" class="category-card">
+                    🧹<h3>Cleaning</h3>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/products?category=Cooling" class="category-card">
+                    ❄️<h3>Cooling</h3>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/products?category=Heating" class="category-card">
+                    🔥<h3>Heating</h3>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/products?category=Laundry" class="category-card">
+                    🧺<h3>Laundry</h3>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/products?category=Electrical" class="category-card">
+                    🔌<h3>Electrical</h3>
+                </a>
             </div>
         </section>
 
