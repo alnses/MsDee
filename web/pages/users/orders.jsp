@@ -1,4 +1,4 @@
-﻿<%@ page import="java.util.List" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.project.model.Order" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -7,7 +7,7 @@
 <html>
     <head>
         <title>My Orders | Ms. Dee</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=63">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=70">
     </head>
 
     <body>
@@ -15,6 +15,12 @@
         <jsp:include page="../../partials/header.jsp"/>
 
         <div class="orders-page">
+
+            <% if ("true".equals(request.getParameter("cancelled"))) { %>
+                <div class="order-message success">Order cancelled successfully.</div>
+            <% } else if ("false".equals(request.getParameter("cancelled"))) { %>
+                <div class="order-message error">This order cannot be cancelled.</div>
+            <% } %>
 
             <div class="orders-hero">
                 <div>
@@ -62,7 +68,17 @@
                             <p class="order-date"><%= dateText %></p>
                         </div>
 
-                        <span class="status-badge"><%= orderStatus %></span>
+                        <div class="order-actions">
+                            <span class="status-badge"><%= orderStatus %></span>
+
+                            <% if (!"Paid".equalsIgnoreCase(orderStatus) && !"Cancelled".equalsIgnoreCase(orderStatus)) { %>
+                                <form action="${pageContext.request.contextPath}/orders" method="post" onsubmit="return confirm('Cancel this order?');">
+                                    <input type="hidden" name="action" value="cancel">
+                                    <input type="hidden" name="orderId" value="<%= o.getOrderId() %>">
+                                    <button type="submit" class="cancel-order-btn">Cancel Order</button>
+                                </form>
+                            <% } %>
+                        </div>
                     </div>
 
                     <div class="order-middle enhanced-order-middle">

@@ -16,7 +16,7 @@
 
             if (name != null) {
         %>
-            <a href="${pageContext.request.contextPath}/pages/users/account.jsp">ðŸ‘¤ <%= name %></a>
+            <a href="${pageContext.request.contextPath}/pages/users/account.jsp" class="user-nav-link"><span class="user-nav-icon">&#128100;</span> <%= name %></a>
         <%
             } else {
         %>
@@ -26,7 +26,7 @@
         %>
 
         <a href="${pageContext.request.contextPath}/pages/users/cart.jsp" class="cart-btn">
-            ðŸ›’ Cart <span class="cart-count">0</span>
+             Cart <span class="cart-count">0</span>
         </a>
     </div>
 </nav>
@@ -45,3 +45,4 @@
     refreshHeaderCartCount();
     window.addEventListener("storage", refreshHeaderCartCount);
 </script>
+

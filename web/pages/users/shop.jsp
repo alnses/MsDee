@@ -16,12 +16,12 @@
             <aside class="shop-sidebar">
                 <h2>Categories</h2>
                 <button class="category-btn active" onclick="filterProducts('all', this)">All Products</button>
-                <button class="category-btn" onclick="filterProducts('Kitchen', this)">ðŸ³ Kitchen</button>
-                <button class="category-btn" onclick="filterProducts('Cleaning', this)">ðŸ§¹ Cleaning</button>
-                <button class="category-btn" onclick="filterProducts('Cooling', this)">â„ï¸ Cooling</button>
-                <button class="category-btn" onclick="filterProducts('Heating', this)">ðŸ”¥ Heating</button>
-                <button class="category-btn" onclick="filterProducts('Laundry', this)">ðŸ§º Laundry</button>
-                <button class="category-btn" onclick="filterProducts('Electrical', this)">ðŸ”Œ Electrical</button>
+                <button class="category-btn" onclick="filterProducts('Kitchen', this)">Kitchen</button>
+                <button class="category-btn" onclick="filterProducts('Cleaning', this)">Cleaning</button>
+                <button class="category-btn" onclick="filterProducts('Cooling', this)">Cooling</button>
+                <button class="category-btn" onclick="filterProducts('Heating', this)">Heating</button>
+                <button class="category-btn" onclick="filterProducts('Laundry', this)">Laundry</button>
+                <button class="category-btn" onclick="filterProducts('Electrical', this)">Electrical</button>
             </aside>
 
             <main class="shop-main">
@@ -113,13 +113,13 @@
 
                     <div class="shop-product-card" data-category="Kitchen" data-name="Bread Toaster" data-price="55.90">
                         <div class="shop-product-image">
-                            <img src="${pageContext.request.contextPath}/assets/images/toaster.png" alt="Bread Toaster">
+                            <img src="${pageContext.request.contextPath}/assets/images/breadtoaster.png" alt="Bread Toaster">
                         </div>
                         <h3>Bread Toaster</h3>
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 55.90</span>
-                            <button onclick="addToCart('Bread Toaster', 55.90, '${pageContext.request.contextPath}/assets/images/toaster.png')">Add to Cart</button>
+                            <button onclick="addToCart('Bread Toaster', 55.90, '${pageContext.request.contextPath}/assets/images/breadtoaster.png')">Add to Cart</button>
                         </div>
                     </div>
 
@@ -173,13 +173,13 @@
 
                     <div class="shop-product-card" data-category="Heating" data-name="Steam Iron" data-price="69.90">
                         <div class="shop-product-image">
-                            <img src="${pageContext.request.contextPath}/assets/images/iron.png" alt="Steam Iron">
+                            <img src="${pageContext.request.contextPath}/assets/images/steamiron.png" alt="Steam Iron">
                         </div>
                         <h3>Steam Iron</h3>
                         <p>Heating</p>
                         <div class="shop-card-footer">
                             <span>RM 69.90</span>
-                            <button onclick="addToCart('Steam Iron', 69.90, '${pageContext.request.contextPath}/assets/images/iron.png')">Add to Cart</button>
+                            <button onclick="addToCart('Steam Iron', 69.90, '${pageContext.request.contextPath}/assets/images/steamiron.png')">Add to Cart</button>
                         </div>
                     </div>
 

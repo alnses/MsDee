@@ -7,6 +7,18 @@
     String fullName = user != null ? user.getFullName() : (String) session.getAttribute("fullName");
     String email = user != null ? user.getEmail() : (String) session.getAttribute("email");
     String phone = user != null ? user.getPhone() : (String) session.getAttribute("phone");
+    String memberSince = user != null ? user.getMemberSince() : (String) session.getAttribute("memberSince");
+    String membershipTier = user != null ? user.getMembershipTier() : (String) session.getAttribute("membershipTier");
+    double totalSpent = user != null ? user.getTotalSpent() : 0.0;
+    int discount = user != null ? user.getDiscount() : 0;
+
+    if (session.getAttribute("totalSpent") != null && user == null) {
+        totalSpent = Double.parseDouble(session.getAttribute("totalSpent").toString());
+    }
+
+    if (session.getAttribute("discount") != null && user == null) {
+        discount = Integer.parseInt(session.getAttribute("discount").toString());
+    }
 
     if (fullName == null) {
         response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
@@ -20,27 +32,59 @@
     if (phone == null) {
         phone = "";
     }
+
+    if (memberSince == null) {
+        memberSince = "New Member";
+    }
+
+    if (membershipTier == null) {
+        membershipTier = "Bronze";
+    }
 %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>Profile | Ms. Dee</title>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=63">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=68">
     </head>
     <body>
 
         <jsp:include page="../../partials/header.jsp"/>
 
-        <div class="profile-page">
+        <div class="container profile-account-page">
 
-            <div class="profile-topbar">
+            <div class="account-header">
                 <div>
-                    <h1>My Profile</h1>
-                    <p>Update the details Ms. Dee uses for your account.</p>
+                    <h1>My Account</h1>
+                    <p>Welcome back, <%= fullName %>!</p>
                 </div>
 
-                <a href="${pageContext.request.contextPath}/pages/users/account.jsp" class="small-btn">Back to Account</a>
+                <a href="${pageContext.request.contextPath}/logout" class="signout-btn">Sign Out</a>
+            </div>
+
+            <div class="member-card">
+                <p>Member Since <%= memberSince %></p>
+
+                <h2><%= fullName %></h2>
+                <p><%= email %></p>
+
+                <div class="member-tier">
+                    <span class="account-tier-icon">&#127941;</span>
+                    <h4><%= membershipTier %></h4>
+                </div>
+
+                <div class="member-stats">
+                    <div>
+                        <p>Total Spent</p>
+                        <h2>RM <%= String.format("%.2f", totalSpent) %></h2>
+                    </div>
+
+                    <div>
+                        <p>Member Discount</p>
+                        <h2><%= discount %>% OFF</h2>
+                    </div>
+                </div>
             </div>
 
             <% if ("true".equals(request.getParameter("updated"))) { %>
@@ -49,8 +93,36 @@
                 <div class="profile-message error">Please check your details and try again.</div>
             <% } %>
 
-            <form class="profile-edit-card" action="${pageContext.request.contextPath}/profile" method="post">
-                <h2>Personal Details</h2>
+            <div class="profile-dashboard-grid profile-card-grid">
+                <button type="button" class="card menu-card profile-toggle-card" onclick="toggleProfileForm()">
+                    <div class="icon">&#128100;</div>
+                    <h2>Profile</h2>
+                    <p>Manage your personal information</p>
+                </button>
+
+                <a href="${pageContext.request.contextPath}/orders" class="card menu-card">
+                    <div class="icon">&#128230;</div>
+                    <h2>My Orders</h2>
+                    <p>View order history</p>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/pages/users/membership.jsp" class="card menu-card">
+                    <div class="icon">&#11088;</div>
+                    <h2>Membership</h2>
+                    <p>View benefits and upgrade</p>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/addresses" class="card menu-card">
+                    <div class="icon">&#128205;</div>
+                    <h2>Addresses</h2>
+                    <p>Manage shipping addresses</p>
+                </a>
+            </div>
+
+            <form id="profileEditForm" class="profile-edit-card hidden-profile-form" action="${pageContext.request.contextPath}/profile" method="post">
+                <div class="icon profile-form-icon">&#128100;</div>
+                <h2>Personal Information</h2>
+                <p class="profile-card-subtitle">Edit your customer details below.</p>
 
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
@@ -70,7 +142,23 @@
                 <button type="submit" class="main-btn profile-save-btn">Save Changes</button>
             </form>
 
+            <script>
+                function toggleProfileForm() {
+                    const form = document.getElementById('profileEditForm');
+                    form.classList.toggle('show');
+
+                    if (form.classList.contains('show')) {
+                        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            </script>
+
         </div>
+
+        </div>
+
+        <jsp:include page="../../partials/footer.jsp"/>
 
     </body>
 </html>
+

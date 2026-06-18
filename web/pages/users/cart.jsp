@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <!DOCTYPE html>
 <html>
@@ -58,6 +58,8 @@
         </div>
 
         <script>
+            // 1. Capture the dynamic context path from Tomcat
+            const contextPath = "${pageContext.request.contextPath}";
 
             function getCart() {
 
@@ -71,7 +73,8 @@
                 ).map(item => ({
                     name: item.name,
                     price: parseFloat(item.price),
-                    image: item.image,
+                    // FIX: Maps 'imageUrl' from your backend CartItem model safely
+                    image: item.imageUrl || item.image, 
                     quantity: parseInt(item.quantity),
                     selected: item.selected !== false
                 }));
@@ -122,6 +125,14 @@
                         selectedTotal += subtotal;
                     }
 
+                    // 2. Safely construct the full absolute path for your images
+                    let correctedImageSrc = item.image || "";
+                    
+                    if (correctedImageSrc && !correctedImageSrc.startsWith(contextPath) && !correctedImageSrc.startsWith("http")) {
+                        let cleanImagePath = correctedImageSrc.startsWith("/") ? correctedImageSrc : "/" + correctedImageSrc;
+                        correctedImageSrc = contextPath + cleanImagePath;
+                    }
+
                     let productHTML = ""
 
                             + "<div class='cart-card" + (item.selected ? " selected" : "") + "'>"
@@ -133,7 +144,8 @@
                             + "</label>"
 
                             + "<div class='cart-product-img'>"
-                            + "<img src='" + item.image + "' alt='" + item.name + "'>"
+                            // Uses the dynamically built clean image url
+                            + "<img src='" + correctedImageSrc + "' alt='" + item.name + "'>"
                             + "</div>"
 
                             + "<div class='cart-product-info'>"

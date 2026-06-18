@@ -147,4 +147,31 @@ public class OrderDAO {
 
         return items;
     }
+    public boolean cancelOrderForUser(int orderId, int userId) {
+
+        String sql =
+                "UPDATE orders "
+                + "SET orderStatus = ? "
+                + "WHERE orderId = ? "
+                + "AND userId = ? "
+                + "AND orderStatus <> ? "
+                + "AND orderStatus <> ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "Cancelled");
+            ps.setInt(2, orderId);
+            ps.setInt(3, userId);
+            ps.setString(4, "Paid");
+            ps.setString(5, "Cancelled");
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }
