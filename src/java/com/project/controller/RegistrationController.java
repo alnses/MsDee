@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.dao.DBConnection;
+import com.project.util.DBConnection;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,14 +37,14 @@ public class RegistrationController extends HttpServlet {
             String sql = "INSERT INTO users (full_name, email, password, phone, member_since) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            LocalDate today = LocalDate.now();
-            String formattedDate = today.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
-
+            int currentYear = LocalDate.now().getYear(); 
+            String yearString = String.valueOf(currentYear);
+            
             ps.setString(1, fullName);
             ps.setString(2, email);
             ps.setString(3, password);
             ps.setString(4, phone);
-            ps.setString(5, formattedDate);
+            ps.setString(5, yearString);
 
             int row = ps.executeUpdate();
 

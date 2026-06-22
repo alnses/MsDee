@@ -1,12 +1,15 @@
 package com.project.dao;
 
+import com.project.model.CartItem;
 import com.project.model.Order;
 import com.project.model.OrderItem;
+import com.project.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
 
 public class OrderDAO {
 
@@ -174,4 +177,36 @@ public class OrderDAO {
 
         return false;
     }
+    
+    // Method for Pending Orders count
+public int getPendingOrderCount() {
+    String sql = "SELECT COUNT(*) FROM orders WHERE LOWER(orderStatus) = 'pending'";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) return rs.getInt(1);
+    } catch (Exception e) { e.printStackTrace(); }
+    return 0;
+}
+
+public double getTotalSalesAmount() {
+    // Only sums 'completed' orders
+    String sql = "SELECT COALESCE(SUM(totalAmount), 0) FROM orders WHERE LOWER(orderStatus) = 'completed'";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) return rs.getDouble(1);
+    } catch (Exception e) { e.printStackTrace(); }
+    return 0.0;
+}
+public int getTotalOrderCount() {
+    String sql = "SELECT COUNT(*) FROM orders";
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) return rs.getInt(1);
+    } catch (Exception e) { e.printStackTrace(); }
+    return 0;
+}
+
 }

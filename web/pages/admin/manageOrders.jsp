@@ -153,14 +153,14 @@
                     </td>
                     <td><%= order.getOrderDate() %></td>
                     <td>
-                        <form action="${pageContext.request.contextPath}/adminOrders" method="post">
+                        <form action="${pageContext.request.contextPath}/admin/orders" method="post">
                             <input type="hidden" name="orderId" value="<%= order.getOrderId() %>">
 
                             <select name="status">
-                                <option value="Processing">Processing</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Shipped">Shipped</option>
-                                <option value="Completed">Completed</option>
+                                <option value="Processing" <%= "Processing".equals(status) ? "selected" : "" %>>Processing</option>
+                                <option value="Pending" <%= "Pending".equals(status) ? "selected" : "" %>>Pending</option>
+                                <option value="Shipped" <%= "Shipped".equals(status) ? "selected" : "" %>>Shipped</option>
+                                <option value="Completed" <%= "Completed".equals(status) ? "selected" : "" %>>Completed</option>
                             </select>
 
                             <button class="update-btn" type="submit">Update</button>

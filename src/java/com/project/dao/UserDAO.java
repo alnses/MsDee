@@ -2,6 +2,7 @@ package com.project.dao;
 
 
 import com.project.model.User;
+import com.project.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

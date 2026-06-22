@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.dao.DBConnection;
+import com.project.util.DBConnection;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

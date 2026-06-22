@@ -1,6 +1,7 @@
 package com.project.dao;
 
 import com.project.model.CartItem;
+import com.project.util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

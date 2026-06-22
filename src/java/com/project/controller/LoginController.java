@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.dao.DBConnection;
+import com.project.util.DBConnection;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,7 +47,7 @@ public class LoginController extends HttpServlet {
 
                 // IMPORTANT
                 session.setAttribute(
-                        "user_id",
+                        "userId",
                         rs.getInt("user_id")
                 );
 

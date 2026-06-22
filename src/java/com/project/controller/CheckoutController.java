@@ -1,6 +1,6 @@
 package com.project.controller;
 
-import com.project.dao.DBConnection;
+import com.project.util.DBConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
