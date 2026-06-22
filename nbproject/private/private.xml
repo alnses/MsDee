@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/pages/users/checkout.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/pages/users/cart.jsp</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/src/java/com/project/controller/CheckoutController.java</file>
-            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/pages/users/paymentSuccess.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/pages/users/shop.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/assets/css/style.css</file>
+            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/src/java/com/project/controller/ProductController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/web/pages/users/homepage.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Desktop/msdee/src/java/com/project/dao/ProductDAO.java</file>
         </group>
     </open-files>
 </project-private>
