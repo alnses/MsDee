@@ -13,16 +13,13 @@ public class Product {
     public Product() {
     }
 
-    public Product(int productId, String productName, String category, String description,
-                   double price, int stockQuantity, String imageUrl, boolean active) {
-        this.productId = productId;
+    public Product(String productName, String category, String description, double price, int stockQuantity, String imageUrl) {
         this.productName = productName;
         this.category = category;
         this.description = description;
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.imageUrl = imageUrl;
-        this.active = active;
     }
 
     public int getProductId() {

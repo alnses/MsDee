@@ -16,31 +16,26 @@ import javax.servlet.http.*;
 public class AuthFilter implements Filter {
 
     @Override
-    public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
-            FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
         HttpSession session = req.getSession(false);
 
-        boolean loggedIn =
-                session != null &&
-                session.getAttribute("user_id") != null;
+        // This now matches the key set in LoginController
+        boolean loggedIn = session != null && session.getAttribute("userId") != null;
 
         if (!loggedIn) {
-
-            res.sendRedirect(
-                    req.getContextPath()
-                    + "/pages/users/login.jsp"
-            );
-
+            res.sendRedirect(req.getContextPath() + "/pages/users/login.jsp");
             return;
         }
 
         chain.doFilter(request, response);
     }
+
+    @Override
+    public void init(FilterConfig filterConfig) {}
+    @Override
+    public void destroy() {}
 }

@@ -25,18 +25,21 @@
     <body>
         <jsp:include page="/partials/admin-sidebar.jsp"/>
 
+        <div style="width: 260px; float: left;"></div>
+
         <div class="admin-layout">
-
-            <aside class="admin-sidebar">
-                <h2>Ms.Dee Admin</h2>
-                <a href="adminDashboard.jsp">Dashboard</a>
-                <a href="manageProducts.jsp">Manage Products</a>
-                <a href="manageInventory.jsp" class="active">Manage Inventory</a>
-                <a href="manageOrders.jsp">Manage Orders</a>
-                <a href="report.jsp">Reports</a>
-            </aside>
-
             <main class="admin-main">
+                <% 
+                    String msg = (String) session.getAttribute("message");
+                    if (msg != null) { 
+                %>
+                    <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+                        <%= msg %>
+                    </div>
+                <% 
+                        session.removeAttribute("message"); 
+                    } 
+                %>
 
                 <h1>Manage Inventory</h1>
                 <p>Update stock quantity and product availability status.</p>
@@ -57,24 +60,25 @@
                         <td><%= p.getProductName()%></td>
                         <td><%= p.getCategory()%></td>
                         <td><%= p.getStockQuantity()%></td>
-                        <td><%= p.isActive() ? "Active" : "Inactive"%></td>
+                        <td>
+                            <% if (p.getStockQuantity() > 0) { %>
+                                Active
+                            <% } else { %>
+                                Inactive
+                            <% } %>
+                        </td>
                         <td>
                             <form action="${pageContext.request.contextPath}/products" method="post">
                                 <input type="hidden" name="action" value="updateStock">
-                                <input type="hidden" name="productId" value="<%= p.getProductId()%>">
-
-                                <input type="number" name="stockQuantity" value="<%= p.getStockQuantity()%>" min="0" required>
-
+                                <input type="hidden" name="productId" value="<%= p.getProductId() %>">
+                                <input type="number" name="stockQuantity" value="<%= p.getStockQuantity() %>" min="0" required>
                                 <button type="submit">Update</button>
                             </form>
                         </td>
                     </tr>
                     <% }%>
                 </table>
-
             </main>
-
         </div>
-
     </body>
 </html>
