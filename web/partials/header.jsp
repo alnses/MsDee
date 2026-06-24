@@ -44,7 +44,7 @@
 
         <a href="${pageContext.request.contextPath}/pages/users/cart.jsp" class="cart-btn">
 
-            Cart <span class="cart-count">0</span>
+            <span class="cart-count">0</span>
 
             🛒 Cart <span class="cart-count" id="headerCartCount"><%= totalCartItems%></span>
 

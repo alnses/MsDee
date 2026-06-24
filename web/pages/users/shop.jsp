@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -345,18 +345,16 @@
             let quickViewQuantity = 1;
             <script>
             // Redirects to detailed product page with parameters passed in URL string safely
-            function viewProduct(card) {
+                            function viewProduct(card) {
                     const name = encodeURIComponent(card.dataset.name);
             const price = encodeURIComponent(card.dataset.price);
             const category = encodeURIComponent(card.dataset.category);
             const image = encodeURIComponent(card.querySelector('img').src);
             window.location.href = "${pageContext.request.contextPath}/pages/users/productDetails.jsp?name=" + name + "&price=" + price + "&category=" + category + "&image=" + image;
-                    }
-                    
-                >>>>>>> fd7c233ba9a56af603dc db5 9c430e0f8787afa05
-                function filterProducts(cat, btn) {
+                }
+                    function filterProducts(cat, btn) {
                     document.querySelectorAll('.shop-product-card').forEach(card => {
-            card.style.display = (cat === 'all' || car d.da taset.category === cat) ? 'block' : 'none';
+            card.style.display = (cat === 'all' || card.dataset.category === cat) ? 'block' : 'none';
             });
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             if (btn) {
@@ -371,8 +369,8 @@
 
             document.querySelector('.shop-header h1').innerText =
                     cat === 'all' ? 'All Products' : cat + ' Products';
-                        }
-                function sortProducts() {
+                }
+                        function sortProducts() {
                     const grid = document.getElementById('productGrid');
             const cards = Array.from(grid.children);
             const sortValue = document.getElementById('sortSelect').value;
@@ -383,9 +381,8 @@
             return a.dataset.name.localeCompare(b.dataset.name);
             });
             cards.forEach(card => grid.appendChild(card));
-                        }
-                
-                            function addToCart(name, price, image) {
+                }
+                        function addToCart(name, price, image) {
                     openQuickView(name, price, image);
                 }
                             function openQuickView(name, price, image) {
@@ -407,27 +404,24 @@
             document.getElementById('quickViewQty').innerText = quickViewQuantity;
                 document.getElementById('quickViewModal').classList.add('show');
                         }
-                        
-                            function hideQuickView() {
+                        function hideQuickView() {
                 document.getElementById('quickViewModal').classList.remove('show');
-                    }
-                    
-                    function closeQuickView(event) {
-                if (event.target.id === 'quickViewModal') {
-            hideQuickView();
+                        }
+                        function closeQuickView(event) {
+                    if (event.target.id === 'quickViewModal') {
+                hideQuickView();
             }
-                            }
-                            
-                            function changeQuickViewQty(change) {
+                    }
+                    function changeQuickViewQty(change) {
                     quickViewQuantity += change;
-                if (quickViewQuantity < 1) {
+            if (quickViewQuantity < 1) {
             quickViewQuantity = 1;
             }
 
-            document.getElementById('quickViewQty').innerText = quickViewQuantity;
+                document.getElementById('quickViewQty').innerText = quickViewQuantity;
                         }
-                    
-                function confirmQuickViewAdd() {
+                        
+                        function confirmQuickViewAdd() {
                     if (!quickViewProduct) {
             return;
             }
@@ -435,14 +429,12 @@
             addCartItem(
                     quickViewProduct.name,
                     quickViewProduct.price,
-                quickViewProduct.image,
-                    quickViewQuantity                     );
+                    quickViewProduct.image,
+                    quickViewQuantity);
             hideQuickView();
-            showToast(quickViewProduct.name + ' added to cart!');
-                }
-                
-                function addCartItem(name, price, image, quantity) {
-                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                showToast(quickViewProduct.name + ' added to cart!');
+            }
+            function addCartItem(name, price, image, quantity) {                     let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let existingItem = cart.find(item => item.name === name);
             if (existingItem) {
             existingItem.quantity += quantity;
@@ -452,61 +444,52 @@
             name: name,
                     price: price,
                     image: image,
-                quantity: quantity,
+                    quantity: quantity,
                     selected: true
             });
             }
 
-            localStorage.setItem("cart", JSON.stringify(cart));
+                localStorage.setItem("cart", JSON.stringify(cart));
             updateCartCount();
-                            }
-                            
-                            function updateCartCount() {
+                        }
+                    function updateCartCount() {
                     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                        let totalItems = cart.reduce(( tot al, item) => tota l +  (parseInt(item.quantity) || 0), 0);
-                const count = document.querySelector(".cart-count");
+            let totalItems = cart.reduce((total, item) => total + (parseInt(item.quantity) || 0), 0);
+            const count = document.querySelector(".cart-count");
             if (count) {
-            count.innerText = totalItems;
+                count.innerText = totalItems;
             }
-            }
-            
-            =======
-            >>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
-                    function showToast(message) {
-                const t = document.getElementById('to as t' );
-                if (t) {
+                        } 
+                        
+                        function showToast(message) {
+                    const t = document.getElementById('toast');
+            if (t) {
             t.innerText = message;
             t.style.display = 'block';
             setTimeout(() => {
-            t.style.display = 'none';
+                t.style.display = 'none';
             }, 2500);
             }
-                    }
-                    
-                            function applyCategoryFromUrl() {
+            }
+            
+            function applyCategoryFromUrl() {
                     const params = new URLSearchParams(window.location.search);
             const category = params.get('category');
-            === === =
-                    // Checks the URL parameters on page load to see if an item was successfully added
-                    document.addEventListener("DOMContentLoaded", function() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('added') === 'true') {
-                    showToast("Item successfully added to cart!");
-                    // Clean up URL parameters so refreshing doesn't keep showing the toast message
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    }
-                    });
-        </script>
->>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
-
-                if (category) {
-                    filterProducts(category, null);
-                }
+            // Checks the URL parameters on page load to see if an item was successfully added
+            document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('added') === 'true') {
+            showToast("Item successfully added to cart!");
+            // Clean up URL parameters so refreshing doesn't keep showing the toast message
+            window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            });
+            if (category) {
+            filterProducts(category, null);
             }
 
             updateCartCount();
-            applyCategoryFromUrl();
-        </script>
+            </script>
             <jsp:include page="../../partials/footer.jsp"/>
         </body>
     </html>
