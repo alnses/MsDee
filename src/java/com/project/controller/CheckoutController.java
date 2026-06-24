@@ -1,19 +1,16 @@
 package com.project.controller;
 
+<<<<<<< HEAD
 import com.project.util.DBConnection;
 import java.io.BufferedReader;
+=======
+import com.project.dao.CartDAO;
+import com.project.model.CartItem;
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +18,12 @@ import javax.servlet.http.HttpSession;
 import com.project.dao.AddressDAO;
 import com.project.model.Address;
 
+@WebServlet("/CheckoutController")
 public class CheckoutController extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private CartDAO cartDAO = new CartDAO();
 
+<<<<<<< HEAD
     private static final String TOYYIBPAY_API_URL
             = "https://toyyibpay.com/index.php/api/createBill";
 
@@ -37,24 +38,57 @@ public class CheckoutController extends HttpServlet {
 
     private static final String CART_PAGE
             = "/pages/users/cart.jsp";
-
+=======
+    // CASE 1: Handles "Proceed to Checkout" from the Cart Page
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         HttpSession session = request.getSession(false);
-
-        if (session == null) {
+        if (session == null || session.getAttribute("userId") == null) {
             response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
             return;
         }
 
-        Object userObj = session.getAttribute("user_id");
+        int userId = (int) session.getAttribute("userId");
 
-        if (userObj == null) {
-            userObj = session.getAttribute("userId");
+        // Fetch everything currently in their database cart
+        List<CartItem> cartItems = cartDAO.getCartItems(userId);
+        double subtotal = cartDAO.getCartTotal(userId);
+
+        // Attach details to request scope for checkout.jsp to read
+        request.setAttribute("checkoutItems", cartItems);
+        request.setAttribute("checkoutSubtotal", subtotal);
+        request.setAttribute("isSingleProductCheckout", false);
+
+        // Forward safely to checkout view page
+        request.getRequestDispatcher("/pages/users/checkout.jsp").forward(request, response);
+    }
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
+
+    // CASE 2: Handles the "Buy Now" form submission from Product Details
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp?error=auth");
+            return;
         }
 
+        String prodName = request.getParameter("prodName");
+        String prodPriceStr = request.getParameter("prodPrice");
+        String prodImage = request.getParameter("prodImage");
+
+        if (prodName != null && prodPriceStr != null) {
+            request.setAttribute("checkoutName", prodName);
+            request.setAttribute("checkoutPrice", Double.parseDouble(prodPriceStr));
+            request.setAttribute("checkoutImage", prodImage);
+            request.setAttribute("isSingleProductCheckout", true);
+        }
+
+<<<<<<< HEAD
         if (userObj == null) {
             response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
             return;
@@ -334,5 +368,8 @@ public class CheckoutController extends HttpServlet {
 
     private String encode(String value) throws UnsupportedEncodingException {
         return URLEncoder.encode(value, "UTF-8");
+=======
+        request.getRequestDispatcher("/pages/users/checkout.jsp").forward(request, response);
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
     }
 }

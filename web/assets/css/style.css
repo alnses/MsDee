@@ -943,13 +943,20 @@ button {
     box-shadow: 0 0 0 3px rgba(102, 120, 242, 0.15);
 }
 
+/* Ensure the grid adapts fluidly to square shapes */
 .shop-product-list {
     display: grid;
+<<<<<<< HEAD
     grid-template-columns: repeat(3, 1fr);
+=======
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
     gap: 25px;
 }
 
+/* Force the product card to be an absolute 1:1 square ratio */
 .shop-product-card {
+<<<<<<< HEAD
     background: white;
     border-radius: 18px;
     padding: 20px;
@@ -959,49 +966,79 @@ button {
     justify-content: space-between;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
+=======
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: 1 / 1; /* Forces square shape */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #edf2f9;
+    cursor: pointer;
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
 }
 
 .shop-product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
+/* Let the image container grow to fill available square space cleanly */
 .shop-product-image {
+<<<<<<< HEAD
     height: 180px;
+=======
+    flex: 1;
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
     display: flex;
-    justify-content: center;
     align-items: center;
+<<<<<<< HEAD
+=======
+    justify-content: center;
+    padding: 20px;
+    background-color: #fff;
+    overflow: hidden;
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
 }
 
 .shop-product-image img {
-    width: 150px;
-    height: 150px;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
 }
 
+/* Simple text formatting adjustments for the bottom of the square card */
 .shop-product-card h3 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.shop-product-card p {
-    color: #777b8d;
     font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 18px;
+    color: #313a46;
+    padding: 0 15px;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+.shop-product-card > p {
+    font-size: 11px;
+    color: #98a6ad;
+    padding: 0 15px;
+    text-transform: uppercase;
+}
+
+/* Align the price text nicely at the bottom */
 .shop-card-footer {
+    padding: 12px 15px 18px 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: bwc;
     align-items: center;
 }
 
 .shop-card-footer span {
-    color: #ff5757;
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 700;
+    color: #fa5c7c;
 }
 
 .shop-card-footer button {

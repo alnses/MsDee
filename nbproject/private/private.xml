@@ -2,6 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/controller/ProfileController.java</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/cart.jsp</file>
@@ -22,5 +23,8 @@
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/promotions.jsp</file>
             <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/controller/AddressController.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
     </open-files>
 </project-private>
