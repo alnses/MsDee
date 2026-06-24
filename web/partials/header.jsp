@@ -1,11 +1,9 @@
-<<<<<<< HEAD
+
 ﻿<%@ page contentType="text/html;charset=UTF-8" %>
 
-=======
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
->>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
 <nav class="navbar">
     <div class="logo">
         <h1>Ms. Dee</h1>
@@ -32,30 +30,29 @@
                     }
                 }
             }
-            
+
             if (name != null) {
         %>
-            <a href="${pageContext.request.contextPath}/pages/users/account.jsp" class="user-nav-link"><span class="user-nav-icon">&#128100;</span> <%= name %></a>
+        <a href="${pageContext.request.contextPath}/pages/users/account.jsp" class="user-nav-link"><span class="user-nav-icon">&#128100;</span> <%= name%></a>
         <%
-            } else {
+        } else {
         %>
-            <a href="${pageContext.request.contextPath}/pages/users/login.jsp">Sign In</a>
+        <a href="${pageContext.request.contextPath}/pages/users/login.jsp">Sign In</a>
         <%
             }
         %>
 
         <a href="${pageContext.request.contextPath}/pages/users/cart.jsp" class="cart-btn">
-<<<<<<< HEAD
-             Cart <span class="cart-count">0</span>
-=======
-            🛒 Cart <span class="cart-count" id="headerCartCount"><%= totalCartItems %></span>
->>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
+
+            Cart <span class="cart-count">0</span>
+
+            🛒 Cart <span class="cart-count" id="headerCartCount"><%= totalCartItems%></span>
+
         </a>
     </div>
 </nav>
 
 <script>
-<<<<<<< HEAD
     function refreshHeaderCartCount() {
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         let totalItems = cart.reduce((total, item) => total + (parseInt(item.quantity) || 0), 0);
@@ -66,14 +63,13 @@
         }
     }
 
+
+
     refreshHeaderCartCount();
     window.addEventListener("storage", refreshHeaderCartCount);
-</script>
 
-=======
-    // Safeguard: Ensure localStorage doesn't override backend state if the user is signed out
-    document.addEventListener("DOMContentLoaded", function() {
-        const userIdActive = <%= (userId != null) ? "true" : "false" %>;
+    document.addEventListener("DOMContentLoaded", function () {
+        const userIdActive = <%= (userId != null) ? "true" : "false"%>;
         if (!userIdActive) {
             localStorage.removeItem("cart");
             const badge = document.getElementById("headerCartCount");
@@ -83,4 +79,5 @@
         }
     });
 </script>
->>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
+
+
