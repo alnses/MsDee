@@ -39,7 +39,7 @@
 
                 <div class="shop-product-list" id="productGrid">
 
-                    <div class="shop-product-card" data-category="Cooling" data-name="Air Cooler" data-price="189.90">
+                    <div class="shop-product-card" data-category="Cooling" data-name="Air Cooler" data-price="189.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/aircooler.png" alt="Air Cooler">
                         </div>
@@ -47,11 +47,10 @@
                         <p>Cooling</p>
                         <div class="shop-card-footer">
                             <span>RM 189.90</span>
-                            <button onclick="addToCart('Air Cooler', 189.90, '${pageContext.request.contextPath}/assets/images/aircooler.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Kitchen" data-name="Blender" data-price="110.42">
+                    <div class="shop-product-card" data-category="Kitchen" data-name="Blender" data-price="110.42" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/blender.png" alt="Blender">
                         </div>
@@ -59,11 +58,10 @@
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 110.42</span>
-                            <button onclick="addToCart('Blender', 110.42, '${pageContext.request.contextPath}/assets/images/blender.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Kitchen" data-name="Rice Cooker" data-price="71.92">
+                    <div class="shop-product-card" data-category="Kitchen" data-name="Rice Cooker" data-price="71.92" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/ricecooker.png" alt="Rice Cooker">
                         </div>
@@ -71,11 +69,10 @@
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 71.92</span>
-                            <button onclick="addToCart('Rice Cooker', 71.92, '${pageContext.request.contextPath}/assets/images/ricecooker.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Kitchen" data-name="Electric Kettle" data-price="49.90">
+                    <div class="shop-product-card" data-category="Kitchen" data-name="Electric Kettle" data-price="49.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/electrickettle.png" alt="Electric Kettle">
                         </div>
@@ -83,11 +80,10 @@
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 49.90</span>
-                            <button onclick="addToCart('Electric Kettle', 49.90, '${pageContext.request.contextPath}/assets/images/electrickettle.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Kitchen" data-name="Air Fryer" data-price="199.90">
+                    <div class="shop-product-card" data-category="Kitchen" data-name="Air Fryer" data-price="199.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/airfryer.png" alt="Air Fryer">
                         </div>
@@ -95,11 +91,10 @@
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 199.90</span>
-                            <button onclick="addToCart('Air Fryer', 199.90, '${pageContext.request.contextPath}/assets/images/airfryer.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Kitchen" data-name="Microwave Oven" data-price="249.90">
+                    <div class="shop-product-card" data-category="Kitchen" data-name="Microwave Oven" data-price="249.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/microwave.png" alt="Microwave Oven">
                         </div>
@@ -107,11 +102,10 @@
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 249.90</span>
-                            <button onclick="addToCart('Microwave Oven', 249.90, '${pageContext.request.contextPath}/assets/images/microwave.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Kitchen" data-name="Bread Toaster" data-price="55.90">
+                    <div class="shop-product-card" data-category="Kitchen" data-name="Bread Toaster" data-price="55.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/breadtoaster.png" alt="Bread Toaster">
                         </div>
@@ -119,11 +113,14 @@
                         <p>Kitchen</p>
                         <div class="shop-card-footer">
                             <span>RM 55.90</span>
+<<<<<<< HEAD
                             <button onclick="addToCart('Bread Toaster', 55.90, '${pageContext.request.contextPath}/assets/images/breadtoaster.png')">Add to Cart</button>
+=======
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Cleaning" data-name="Vacuum Cleaner" data-price="159.90">
+                    <div class="shop-product-card" data-category="Cleaning" data-name="Vacuum Cleaner" data-price="159.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/vacuum.png" alt="Vacuum Cleaner">
                         </div>
@@ -131,11 +128,10 @@
                         <p>Cleaning</p>
                         <div class="shop-card-footer">
                             <span>RM 159.90</span>
-                            <button onclick="addToCart('Vacuum Cleaner', 159.90, '${pageContext.request.contextPath}/assets/images/vacuum.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Cleaning" data-name="Steam Mop" data-price="129.90">
+                    <div class="shop-product-card" data-category="Cleaning" data-name="Steam Mop" data-price="129.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/steammop.png" alt="Steam Mop">
                         </div>
@@ -143,11 +139,10 @@
                         <p>Cleaning</p>
                         <div class="shop-card-footer">
                             <span>RM 129.90</span>
-                            <button onclick="addToCart('Steam Mop', 129.90, '${pageContext.request.contextPath}/assets/images/steammop.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Cooling" data-name="Table Fan" data-price="59.90">
+                    <div class="shop-product-card" data-category="Cooling" data-name="Table Fan" data-price="59.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/tablefan.png" alt="Table Fan">
                         </div>
@@ -155,11 +150,10 @@
                         <p>Cooling</p>
                         <div class="shop-card-footer">
                             <span>RM 59.90</span>
-                            <button onclick="addToCart('Table Fan', 59.90, '${pageContext.request.contextPath}/assets/images/tablefan.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Cooling" data-name="Stand Fan" data-price="89.90">
+                    <div class="shop-product-card" data-category="Cooling" data-name="Stand Fan" data-price="89.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/standfan.png" alt="Stand Fan">
                         </div>
@@ -167,11 +161,10 @@
                         <p>Cooling</p>
                         <div class="shop-card-footer">
                             <span>RM 89.90</span>
-                            <button onclick="addToCart('Stand Fan', 89.90, '${pageContext.request.contextPath}/assets/images/standfan.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Heating" data-name="Steam Iron" data-price="69.90">
+                    <div class="shop-product-card" data-category="Heating" data-name="Steam Iron" data-price="69.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/steamiron.png" alt="Steam Iron">
                         </div>
@@ -179,11 +172,14 @@
                         <p>Heating</p>
                         <div class="shop-card-footer">
                             <span>RM 69.90</span>
+<<<<<<< HEAD
                             <button onclick="addToCart('Steam Iron', 69.90, '${pageContext.request.contextPath}/assets/images/steamiron.png')">Add to Cart</button>
+=======
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Laundry" data-name="Washing Machine" data-price="699.90">
+                    <div class="shop-product-card" data-category="Laundry" data-name="Washing Machine" data-price="699.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/washingmachine.png" alt="Washing Machine">
                         </div>
@@ -191,11 +187,10 @@
                         <p>Laundry</p>
                         <div class="shop-card-footer">
                             <span>RM 699.90</span>
-                            <button onclick="addToCart('Washing Machine', 699.90, '${pageContext.request.contextPath}/assets/images/washingmachine.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Electrical" data-name="Extension Plug" data-price="29.90">
+                    <div class="shop-product-card" data-category="Electrical" data-name="Extension Plug" data-price="29.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/extensionplug.png" alt="Extension Plug">
                         </div>
@@ -203,11 +198,10 @@
                         <p>Electrical</p>
                         <div class="shop-card-footer">
                             <span>RM 29.90</span>
-                            <button onclick="addToCart('Extension Plug', 29.90, '${pageContext.request.contextPath}/assets/images/extensionplug.png')">Add to Cart</button>
                         </div>
                     </div>
 
-                    <div class="shop-product-card" data-category="Electrical" data-name="LED Desk Lamp" data-price="39.90">
+                    <div class="shop-product-card" data-category="Electrical" data-name="LED Desk Lamp" data-price="39.90" onclick="viewProduct(this)" style="cursor: pointer;">
                         <div class="shop-product-image">
                             <img src="${pageContext.request.contextPath}/assets/images/desklamp.png" alt="LED Desk Lamp">
                         </div>
@@ -215,7 +209,6 @@
                         <p>Electrical</p>
                         <div class="shop-card-footer">
                             <span>RM 39.90</span>
-                            <button onclick="addToCart('LED Desk Lamp', 39.90, '${pageContext.request.contextPath}/assets/images/desklamp.png')">Add to Cart</button>
                         </div>
                     </div>
 
@@ -355,6 +348,20 @@
             let quickViewProduct = null;
             let quickViewQuantity = 1;
 
+<<<<<<< HEAD
+=======
+        <script>
+            // Redirects to detailed product page with parameters passed in URL string safely
+            function viewProduct(card) {
+                const name = encodeURIComponent(card.dataset.name);
+                const price = encodeURIComponent(card.dataset.price);
+                const category = encodeURIComponent(card.dataset.category);
+                const image = encodeURIComponent(card.querySelector('img').src);
+                
+                window.location.href = "${pageContext.request.contextPath}/pages/users/productDetails.jsp?name=" + name + "&price=" + price + "&category=" + category + "&image=" + image;
+            }
+
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
             function filterProducts(cat, btn) {
                 document.querySelectorAll('.shop-product-card').forEach(card => {
                     card.style.display = (cat === 'all' || card.dataset.category === cat) ? 'block' : 'none';
@@ -391,6 +398,7 @@
                 cards.forEach(card => grid.appendChild(card));
             }
 
+<<<<<<< HEAD
             function addToCart(name, price, image) {
                 openQuickView(name, price, image);
             }
@@ -484,19 +492,36 @@
                 }
             }
 
+=======
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
             function showToast(message) {
                 const t = document.getElementById('toast');
-                t.innerText = message;
-                t.style.display = 'block';
-
-                setTimeout(() => {
-                    t.style.display = 'none';
-                }, 2500);
+                if (t) {
+                    t.innerText = message;
+                    t.style.display = 'block';
+                    setTimeout(() => {
+                        t.style.display = 'none';
+                    }, 2500);
+                }
             }
 
+<<<<<<< HEAD
             function applyCategoryFromUrl() {
                 const params = new URLSearchParams(window.location.search);
                 const category = params.get('category');
+=======
+            // Checks the URL parameters on page load to see if an item was successfully added
+            document.addEventListener("DOMContentLoaded", function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('added') === 'true') {
+                    showToast("Item successfully added to cart!");
+                    
+                    // Clean up URL parameters so refreshing doesn't keep showing the toast message
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            });
+        </script>
+>>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
 
                 if (category) {
                     filterProducts(category, null);
@@ -506,5 +531,6 @@
             updateCartCount();
             applyCategoryFromUrl();
         </script>
+        <jsp:include page="../../partials/footer.jsp"/>
     </body>
 </html>

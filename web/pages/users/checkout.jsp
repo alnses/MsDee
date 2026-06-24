@@ -1,318 +1,135 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.project.model.CartItem" %>
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Checkout | Ms. Dee</title>
+    <head>
+        <title>Checkout | Ms. Dee</title>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=31">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+            .checkout-container { max-width: 1000px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+            .payment-methods { margin-bottom: 30px; }
+            .method-option { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+            .order-summary-box { background: #f7fafc; padding: 20px; border-radius: 8px; margin-top: 20px; }
+            .summary-item { display: flex; justify-content: space-between; padding: 10px 0; font-size: 16px; border-bottom: 1px solid #edf2f7; }
+            .summary-item:last-child { border-bottom: none; }
+            .total-row { font-size: 18px; font-weight: 700; color: #2d3748; padding-top: 15px; }
+            .btn-group { display: flex; gap: 15px; margin-top: 25px; }
+            .btn-back { background: #718096; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; font-weight: 600; }
+            .btn-order { background: #047857; color: white; padding: 12px 35px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+            .checkout-item-preview { display: flex; justify-content: space-between; color: #4a5568; font-size: 15px; margin-bottom: 5px; }
+        </style>
+    </head>
+    <body>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+        <jsp:include page="../../partials/header.jsp"/>
 
-    <!-- Main CSS -->
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/style.css">
+        <div class="checkout-container">
+            <h1 style="color: #1e1e2f; margin-bottom: 25px;">Checkout</h1>
 
-</head>
-
-<body>
-
-<jsp:include page="../../partials/header.jsp"/>
-
-<div class="container mt-5 mb-5 text-center">
-
-    <button class="btn btn-success px-5 py-3"
-            data-bs-toggle="modal"
-            data-bs-target="#checkoutModal">
-
-        Proceed To Checkout
-
-    </button>
-
-</div>
-
-
-<!-- ===========================
-     CHECKOUT MODAL
-============================ -->
-
-<div class="modal fade"
-     id="checkoutModal"
-     tabindex="-1">
-
-    <div class="modal-dialog modal-dialog-centered custom-checkout-modal">
-
-        <div class="modal-content checkout-modal">
-
-            <!-- HEADER -->
-
-            <div class="modal-header border-0">
-
-                <h3 class="checkout-title">
-                    Checkout
-                </h3>
-
-                <button class="btn-close"
-                        data-bs-dismiss="modal">
-                </button>
-
-            </div>
-
-
-            <!-- BODY -->
-
-            <div class="modal-body checkout-body">
-
-                <!-- ERROR MESSAGE -->
-
-                <%
-                    String error = request.getParameter("error");
-
-                    if ("toyyibpay_failed".equals(error)) {
-                %>
-
-                <div class="alert alert-danger">
-
-                    Payment failed.
-                    Please try again.
-
+            <form action="${pageContext.request.contextPath}/PlaceOrderController" method="POST">
+                
+                <div class="payment-methods">
+                    <h3>Select Payment Method</h3>
+                    <div class="method-option">
+                        <input type="radio" name="paymentMethod" value="Online Banking" checked id="bank">
+                        <label Skinner for="bank">🌐 Toyyibpay Online Banking <br><small style="color: #718096;">FPX / Bank / E-wallet</small></label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" name="paymentMethod" value="COD" id="cod">
+                        <label for="cod">💵 Cash On Delivery <br><small style="color: #718096;">Pay when item arrives</small></label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" name="paymentMethod" value="QR" id="qr">
+                        <label for="qr">📱 QR Payment <br><small style="color: #718096;">DuitNow / TNG / MAE</small></label>
+                    </div>
                 </div>
 
                 <%
+                    // 1. Determine checkout flow type status attributes
+                    Boolean isSingle = (Boolean) request.getAttribute("isSingleProductCheckout");
+                    
+                    int totalQuantity = 0;
+                    double subtotal = 0.0;
+                    double shippingFee = 8.00; // Fixed flat rate template fee in RM
+
+                    if (isSingle != null && isSingle) {
+                        // Flow A: Single direct "Buy Now" product item
+                        String name = (String) request.getAttribute("checkoutName");
+                        Double price = (Double) request.getAttribute("checkoutPrice");
+                        totalQuantity = 1;
+                        subtotal = (price != null) ? price : 0.0;
+                %>
+                    <div class="order-summary-box">
+                        <h3>Order Summary</h3>
+                        <div style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                            <div class="checkout-item-preview">
+                                <span>Item: <strong><%= name %></strong></span>
+                                <span>Qty: 1</span>
+                            </div>
+                        </div>
+                <%
+                    } else {
+                        // Flow B: Loading full multi-item database cart collection rows
+                        List<CartItem> items = (List<CartItem>) request.getAttribute("checkoutItems");
+                        Double totalObj = (Double) request.getAttribute("checkoutSubtotal");
+                        subtotal = (totalObj != null) ? totalObj : 0.0;
+                %>
+                    <div class="order-summary-box">
+                        <h3>Order Summary</h3>
+                        <div style="padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+                            <% 
+                                if (items != null) {
+                                    for (CartItem item : items) {
+                                        totalQuantity += item.getQuantity();
+                            %>
+                                        <div class="checkout-item-preview">
+                                            <span><%= item.getProductName() != null ? item.getProductName() : "Premium Item" %> (x<%= item.getQuantity() %>)</span>
+                                            <span>RM <%= String.format("%.2f", item.getPrice() * item.getQuantity()) %></span>
+                                        </div>
+                            <% 
+                                    }
+                                } 
+                            %>
+                        </div>
+                <%
                     }
+                    
+                    // Fallback control if subtotal returns nothing to display safely
+                    if (subtotal == 0.0) {
+                        shippingFee = 0.0;
+                    }
+                    double grandTotal = subtotal + shippingFee;
                 %>
 
-
-
-                <!-- FORM -->
-
-                <form action="${pageContext.request.contextPath}/checkout"
-                      method="post">
-
-                    <!-- SHIPPING ADDRESS -->
-
-                    <h5 class="section-title">
-                        Shipping Address
-                    </h5>
-
-
-                    <div class="mb-3">
-
-                        <label>
-                            Full Name
-                        </label>
-
-                        <input
-                            type="text"
-                            name="fullname"
-                            class="form-control custom-input"
-                            required>
-
+                    <div class="summary-item">
+                        <span>Total Items count</span>
+                        <strong><%= totalQuantity %></strong>
                     </div>
-
-
-                    <div class="mb-3">
-
-                        <label>
-                            Address
-                        </label>
-
-                        <textarea
-                            name="address"
-                            rows="3"
-                            class="form-control custom-input"
-                            required></textarea>
-
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <strong>RM <%= String.format("%.2f", subtotal) %></strong>
                     </div>
-
-
-                    <div class="mb-4">
-
-                        <label>
-                            Phone Number
-                        </label>
-
-                        <input
-                            type="text"
-                            name="phone"
-                            class="form-control custom-input"
-                            required>
-
+                    <div class="summary-item">
+                        <span>Shipping Fee</span>
+                        <strong>RM <%= String.format("%.2f", shippingFee) %></strong>
                     </div>
-
-
-
-                    <!-- SHIPPING -->
-
-                    <h5 class="section-title">
-
-                        Shipping Method
-
-                    </h5>
-
-
-                    <div class="shipping-box">
-
-                        <label class="shipping-option">
-
-                            <input
-                                type="radio"
-                                name="shipping"
-                                value="standard"
-                                checked>
-
-                            <div>
-
-                                <strong>
-                                    Standard Delivery
-                                </strong>
-
-                                <p>
-                                    RM 8.00 (3-5 days)
-                                </p>
-
-                            </div>
-
-                        </label>
-
-
-                        <label class="shipping-option">
-
-                            <input
-                                type="radio"
-                                name="shipping"
-                                value="express">
-
-                            <div>
-
-                                <strong>
-                                    Express Delivery
-                                </strong>
-
-                                <p>
-                                    RM 15.00 (1-2 days)
-                                </p>
-
-                            </div>
-
-                        </label>
-
+                    <div class="summary-item total-row">
+                        <span>Grand Total</span>
+                        <span style="color: #ff4d6d;">RM <%= String.format("%.2f", grandTotal) %></span>
                     </div>
+                </div>
 
+                <input type="hidden" name="orderSubtotal" value="<%= subtotal %>">
+                <input type="hidden" name="orderTotal" value="<%= grandTotal %>">
 
-
-                    <!-- PAYMENT -->
-
-                    <h5 class="section-title mt-4">
-
-                        Payment Method
-
-                    </h5>
-
-
-                    <label class="payment-option active-payment">
-
-                        <input
-                            type="radio"
-                            name="payment"
-                            value="toyyibpay"
-                            checked>
-
-                        <div>
-
-                            <strong>
-                                🏦 ToyyibPay Online Banking
-                            </strong>
-
-                            <p>
-
-                                FPX / Online Banking /
-                                E-wallet
-
-                            </p>
-
-                        </div>
-
-                    </label>
-
-
-
-                    <!-- ORDER SUMMARY -->
-
-                    <div class="mt-4">
-
-                        <h5 class="section-title">
-
-                            Order Summary
-
-                        </h5>
-
-                        <div class="summary-box">
-
-                            <p>
-                                Products:
-                                <strong>
-                                    From Cart
-                                </strong>
-                            </p>
-
-                            <p>
-                                Payment:
-                                <strong>
-                                    ToyyibPay
-                                </strong>
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- BUTTONS -->
-
-                    <div class="checkout-buttons mt-4">
-
-                        <button
-                            type="button"
-                            class="btn cancel-btn"
-                            data-bs-dismiss="modal">
-
-                            Cancel
-
-                        </button>
-
-
-                        <button
-                            type="submit"
-                            class="btn placeorder-btn">
-
-                            Pay with ToyyibPay
-
-                        </button>
-
-                    </div>
-
-
-                </form>
-
-            </div>
-
+                <div class="btn-group">
+                    <a href="${pageContext.request.contextPath}/CartController" class="btn-back">Back</a>
+                    <button type="submit" class="btn-order">Place Order</button>
+                </div>
+            </form>
         </div>
 
-    </div>
-
-</div>
-
-
-
-<jsp:include page="../../partials/footer.jsp"/>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-
-</body>
+    </body>
 </html>

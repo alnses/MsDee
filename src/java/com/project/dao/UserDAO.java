@@ -1,6 +1,5 @@
 package com.project.dao;
 
-
 import com.project.model.User;
 import com.project.util.DBConnection;
 import java.sql.Connection;
@@ -28,9 +27,24 @@ public class UserDAO {
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 user.setMemberSince(rs.getString("member_since"));
-                user.setTotalSpent(rs.getDouble("total_spent"));
-                user.setMembershipTier(rs.getString("membership_tier"));
-                user.setDiscount(rs.getInt("discount"));
+                user.setTotalSpent(getActualTotalSpent(userId));
+                double totalSpent = getActualTotalSpent(userId);
+
+                user.setTotalSpent(totalSpent);
+
+                if (totalSpent >= 5000) {
+                    user.setMembershipTier("Platinum");
+                    user.setDiscount(15);
+                } else if (totalSpent >= 2000) {
+                    user.setMembershipTier("Gold");
+                    user.setDiscount(10);
+                } else if (totalSpent >= 500) {
+                    user.setMembershipTier("Silver");
+                    user.setDiscount(5);
+                } else {
+                    user.setMembershipTier("Bronze");
+                    user.setDiscount(0);
+                }
             }
 
             conn.close();
@@ -40,6 +54,40 @@ public class UserDAO {
         }
 
         return user;
+    }
+
+    public double getActualTotalSpent(int userId) {
+
+        double total = 0;
+
+        try {
+
+            Connection conn = DBConnection.getConnection();
+
+            String sql
+                    = "SELECT COALESCE(SUM(totalAmount),0) "
+                    + "FROM orders "
+                    + "WHERE userId = ? "
+                    + "AND orderStatus <> 'Cancelled'";
+
+            PreparedStatement ps
+                    = conn.prepareStatement(sql);
+
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getDouble(1);
+            }
+
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return total;
     }
 
     public void updateMembership(int userId, double totalSpent) {
@@ -75,11 +123,11 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
     public boolean updateProfile(int userId, String fullName, String email, String phone) {
         String sql = "UPDATE users SET full_name = ?, email = ?, phone = ? WHERE user_id = ?";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, fullName);
             ps.setString(2, email);

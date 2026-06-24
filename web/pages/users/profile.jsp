@@ -1,3 +1,4 @@
+
 ﻿<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.project.model.User" %>
 
@@ -57,41 +58,41 @@
             <div class="account-header">
                 <div>
                     <h1>My Account</h1>
-                    <p>Welcome back, <%= fullName %>!</p>
+                    <p>Welcome back, <%= fullName%>!</p>
                 </div>
 
                 <a href="${pageContext.request.contextPath}/logout" class="signout-btn">Sign Out</a>
             </div>
 
             <div class="member-card">
-                <p>Member Since <%= memberSince %></p>
+                <p>Member Since <%= memberSince%></p>
 
-                <h2><%= fullName %></h2>
-                <p><%= email %></p>
+                <h2><%= fullName%></h2>
+                <p><%= email%></p>
 
                 <div class="member-tier">
                     <span class="account-tier-icon">&#127941;</span>
-                    <h4><%= membershipTier %></h4>
+                    <h4><%= membershipTier%></h4>
                 </div>
 
                 <div class="member-stats">
                     <div>
                         <p>Total Spent</p>
-                        <h2>RM <%= String.format("%.2f", totalSpent) %></h2>
+                        <h2>RM <%= String.format("%.2f", totalSpent)%></h2>
                     </div>
 
                     <div>
                         <p>Member Discount</p>
-                        <h2><%= discount %>% OFF</h2>
+                        <h2><%= discount%>% OFF</h2>
                     </div>
                 </div>
             </div>
 
             <% if ("true".equals(request.getParameter("updated"))) { %>
-                <div class="profile-message success">Profile updated successfully.</div>
+            <div class="profile-message success">Profile updated successfully.</div>
             <% } else if (request.getParameter("error") != null) { %>
-                <div class="profile-message error">Please check your details and try again.</div>
-            <% } %>
+            <div class="profile-message error">Please check your details and try again.</div>
+            <% }%>
 
             <div class="profile-dashboard-grid profile-card-grid">
                 <button type="button" class="card menu-card profile-toggle-card" onclick="toggleProfileForm()">
@@ -126,17 +127,17 @@
 
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input id="fullName" name="fullName" type="text" value="<%= fullName %>" required>
+                    <input id="fullName" name="fullName" type="text" value="<%= fullName%>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" name="email" type="email" value="<%= email %>" required>
+                    <input id="email" name="email" type="email" value="<%= email%>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input id="phone" name="phone" type="tel" value="<%= phone %>" placeholder="Optional">
+                    <input id="phone" name="phone" type="tel" value="<%= phone%>" placeholder="Optional">
                 </div>
 
                 <button type="submit" class="main-btn profile-save-btn">Save Changes</button>
@@ -148,12 +149,10 @@
                     form.classList.toggle('show');
 
                     if (form.classList.contains('show')) {
-                        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        form.scrollIntoView({behavior: 'smooth', block: 'start'});
                     }
                 }
             </script>
-
-        </div>
 
         </div>
 
