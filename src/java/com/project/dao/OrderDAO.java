@@ -1,6 +1,5 @@
 package com.project.dao;
 
-import com.project.model.CartItem;
 import com.project.model.Order;
 import com.project.model.OrderItem;
 import com.project.util.DBConnection;
@@ -9,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Statement;
 
 public class OrderDAO {
 

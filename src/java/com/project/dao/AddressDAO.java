@@ -13,19 +13,33 @@ public class AddressDAO {
     public List<Address> getAddressesByUserId(int userId) {
         List<Address> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM user_addresses WHERE user_id = ? ORDER BY is_default DESC, address_id DESC";
+        try {
+            Connection conn = DBConnection.getConnection();
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
+            String sql = "SELECT * FROM user_addresses WHERE user_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Address address = mapAddress(rs);
-                    list.add(address);
-                }
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Address address = new Address();
+                address.setAddressId(rs.getInt("address_id"));
+                address.setUserId(rs.getInt("user_id"));
+                address.setFullName(rs.getString("full_name"));
+                address.setPhone(rs.getString("phone"));
+                address.setAddressLine(rs.getString("address_line"));
+                address.setCity(rs.getString("city"));
+                address.setState(rs.getString("state"));
+                address.setPostcode(rs.getString("postcode"));
+                address.setDefault(
+                        rs.getBoolean("is_default")
+                );
+
+                list.add(address);
             }
+
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,10 +48,8 @@ public class AddressDAO {
         return list;
     }
 
-    public Address getDefaultAddressByUserId(int userId) {
-        Address address = null;
+    public void addAddress(Address address) {
 
-<<<<<<< HEAD
         try {
 
             Connection conn = DBConnection.getConnection();
@@ -98,113 +110,57 @@ public class AddressDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-=======
-        String sql =
-                "SELECT * FROM user_addresses "
-                + "WHERE user_id = ? "
-                + "ORDER BY is_default DESC, address_id DESC "
-                + "LIMIT 1";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, userId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    address = mapAddress(rs);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return address;
->>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
     }
 
-    public void addAddress(Address address) {
+    public void setPrimaryAddress(
+            int addressId,
+            int userId) {
 
-        try (Connection conn = DBConnection.getConnection()) {
+        try {
 
-            if (address.isDefault()) {
-                String reset = "UPDATE user_addresses SET is_default = FALSE WHERE user_id = ?";
+            Connection conn
+                    = DBConnection.getConnection();
 
-                try (PreparedStatement ps1 = conn.prepareStatement(reset)) {
-                    ps1.setInt(1, address.getUserId());
-                    ps1.executeUpdate();
-                }
-            }
+            PreparedStatement reset
+                    = conn.prepareStatement(
+                            "UPDATE user_addresses SET is_default=FALSE WHERE user_id=?");
 
-            String sql =
-                    "INSERT INTO user_addresses "
-                    + "(user_id, full_name, phone, address_line, city, state, postcode, is_default) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            reset.setInt(1, userId);
+            reset.executeUpdate();
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, address.getUserId());
-                ps.setString(2, address.getFullName());
-                ps.setString(3, address.getPhone());
-                ps.setString(4, address.getAddressLine());
-                ps.setString(5, address.getCity());
-                ps.setString(6, address.getState());
-                ps.setString(7, address.getPostcode());
-                ps.setBoolean(8, address.isDefault());
+            PreparedStatement set
+                    = conn.prepareStatement(
+                            "UPDATE user_addresses SET is_default=TRUE WHERE address_id=?");
 
-                ps.executeUpdate();
-            }
+            set.setInt(1, addressId);
+            set.executeUpdate();
+
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    public void setPrimaryAddress(int addressId, int userId) {
-
-        try (Connection conn = DBConnection.getConnection()) {
-
-            String reset = "UPDATE user_addresses SET is_default = FALSE WHERE user_id = ?";
-
-            try (PreparedStatement ps = conn.prepareStatement(reset)) {
-                ps.setInt(1, userId);
-                ps.executeUpdate();
-            }
-
-            String setPrimary =
-                    "UPDATE user_addresses "
-                    + "SET is_default = TRUE "
-                    + "WHERE address_id = ? AND user_id = ?";
-
-            try (PreparedStatement ps = conn.prepareStatement(setPrimary)) {
-                ps.setInt(1, addressId);
-                ps.setInt(2, userId);
-                ps.executeUpdate();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void deleteAddress(int addressId, int userId) {
+        try {
+            Connection conn = DBConnection.getConnection();
 
-        String sql = "DELETE FROM user_addresses WHERE address_id = ? AND user_id = ?";
-
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            String sql = "DELETE FROM user_addresses WHERE address_id = ? AND user_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setInt(1, addressId);
             ps.setInt(2, userId);
 
             ps.executeUpdate();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-<<<<<<< HEAD
     public Address getPrimaryAddress(int userId) {
 
         Address address = null;
@@ -250,21 +206,3 @@ public class AddressDAO {
         return address;
     }
 }
-=======
-    private Address mapAddress(ResultSet rs) throws Exception {
-        Address address = new Address();
-
-        address.setAddressId(rs.getInt("address_id"));
-        address.setUserId(rs.getInt("user_id"));
-        address.setFullName(rs.getString("full_name"));
-        address.setPhone(rs.getString("phone"));
-        address.setAddressLine(rs.getString("address_line"));
-        address.setCity(rs.getString("city"));
-        address.setState(rs.getString("state"));
-        address.setPostcode(rs.getString("postcode"));
-        address.setDefault(rs.getBoolean("is_default"));
-
-        return address;
-    }
-}
->>>>>>> fd7c233ba9a56af603dcdb59c430e0f8787afa05
