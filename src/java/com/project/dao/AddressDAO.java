@@ -13,19 +13,33 @@ public class AddressDAO {
     public List<Address> getAddressesByUserId(int userId) {
         List<Address> list = new ArrayList<>();
 
-        String sql = "SELECT * FROM user_addresses "
-                + "WHERE user_id = ? "
-                + "ORDER BY is_default DESC, address_id DESC";
+        try {
+            Connection conn = DBConnection.getConnection();
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
+            String sql = "SELECT * FROM user_addresses WHERE user_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, userId);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapAddress(rs));
-                }
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Address address = new Address();
+                address.setAddressId(rs.getInt("address_id"));
+                address.setUserId(rs.getInt("user_id"));
+                address.setFullName(rs.getString("full_name"));
+                address.setPhone(rs.getString("phone"));
+                address.setAddressLine(rs.getString("address_line"));
+                address.setCity(rs.getString("city"));
+                address.setState(rs.getString("state"));
+                address.setPostcode(rs.getString("postcode"));
+                address.setDefault(
+                        rs.getBoolean("is_default")
+                );
+
+                list.add(address);
             }
+
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,36 +48,29 @@ public class AddressDAO {
         return list;
     }
 
-    public Address getDefaultAddressByUserId(int userId) {
-
-        Address address = null;
-
-        String sql = "SELECT * FROM user_addresses "
-                + "WHERE user_id = ? "
-                + "ORDER BY is_default DESC, address_id DESC "
-                + "LIMIT 1";
-
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, userId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    address = mapAddress(rs);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return address;
-    }
-
     public void addAddress(Address address) {
 
-        try (Connection conn = DBConnection.getConnection()) {
+        try {
 
+            Connection conn = DBConnection.getConnection();
+
+            // First address automatically becomes primary
+            String countSql
+                    = "SELECT COUNT(*) FROM user_addresses WHERE user_id = ?";
+
+            PreparedStatement countPs
+                    = conn.prepareStatement(countSql);
+
+            countPs.setInt(1, address.getUserId());
+
+            ResultSet rs = countPs.executeQuery();
+
+            if (rs.next() && rs.getInt(1) == 0) {
+                address.setDefault(true);
+            }
+
+            // If new address is selected as primary,
+            // remove previous primary
             if (address.isDefault()) {
 
                 String reset
@@ -71,10 +78,12 @@ public class AddressDAO {
                         + "SET is_default = FALSE "
                         + "WHERE user_id = ?";
 
-                try (PreparedStatement ps = conn.prepareStatement(reset)) {
-                    ps.setInt(1, address.getUserId());
-                    ps.executeUpdate();
-                }
+                PreparedStatement resetPs
+                        = conn.prepareStatement(reset);
+
+                resetPs.setInt(1, address.getUserId());
+
+                resetPs.executeUpdate();
             }
 
             String sql
@@ -82,67 +91,70 @@ public class AddressDAO {
                     + "(user_id, full_name, phone, address_line, city, state, postcode, is_default) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps
+                    = conn.prepareStatement(sql);
 
-                ps.setInt(1, address.getUserId());
-                ps.setString(2, address.getFullName());
-                ps.setString(3, address.getPhone());
-                ps.setString(4, address.getAddressLine());
-                ps.setString(5, address.getCity());
-                ps.setString(6, address.getState());
-                ps.setString(7, address.getPostcode());
-                ps.setBoolean(8, address.isDefault());
+            ps.setInt(1, address.getUserId());
+            ps.setString(2, address.getFullName());
+            ps.setString(3, address.getPhone());
+            ps.setString(4, address.getAddressLine());
+            ps.setString(5, address.getCity());
+            ps.setString(6, address.getState());
+            ps.setString(7, address.getPostcode());
+            ps.setBoolean(8, address.isDefault());
 
-                ps.executeUpdate();
-            }
+            ps.executeUpdate();
+
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setPrimaryAddress(int addressId, int userId) {
+    public void setPrimaryAddress(
+            int addressId,
+            int userId) {
 
-        try (Connection conn = DBConnection.getConnection()) {
+        try {
 
-            String reset
-                    = "UPDATE user_addresses "
-                    + "SET is_default = FALSE "
-                    + "WHERE user_id = ?";
+            Connection conn
+                    = DBConnection.getConnection();
 
-            try (PreparedStatement ps = conn.prepareStatement(reset)) {
-                ps.setInt(1, userId);
-                ps.executeUpdate();
-            }
+            PreparedStatement reset
+                    = conn.prepareStatement(
+                            "UPDATE user_addresses SET is_default=FALSE WHERE user_id=?");
 
-            String setPrimary
-                    = "UPDATE user_addresses "
-                    + "SET is_default = TRUE "
-                    + "WHERE address_id = ? AND user_id = ?";
+            reset.setInt(1, userId);
+            reset.executeUpdate();
 
-            try (PreparedStatement ps = conn.prepareStatement(setPrimary)) {
-                ps.setInt(1, addressId);
-                ps.setInt(2, userId);
-                ps.executeUpdate();
-            }
+            PreparedStatement set
+                    = conn.prepareStatement(
+                            "UPDATE user_addresses SET is_default=TRUE WHERE address_id=?");
+
+            set.setInt(1, addressId);
+            set.executeUpdate();
+
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void deleteAddress(int addressId, int userId) {
+        try {
+            Connection conn = DBConnection.getConnection();
 
-        String sql
-                = "DELETE FROM user_addresses "
-                + "WHERE address_id = ? AND user_id = ?";
-
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            String sql = "DELETE FROM user_addresses WHERE address_id = ? AND user_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setInt(1, addressId);
             ps.setInt(2, userId);
 
             ps.executeUpdate();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,42 +165,43 @@ public class AddressDAO {
 
         Address address = null;
 
-        String sql
-                = "SELECT * FROM user_addresses "
-                + "WHERE user_id = ? "
-                + "ORDER BY is_default DESC, address_id ASC "
-                + "LIMIT 1";
+        try {
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            Connection conn = DBConnection.getConnection();
+
+            String sql
+                    = "SELECT * FROM user_addresses "
+                    + "WHERE user_id = ? "
+                    + "ORDER BY is_default DESC, address_id ASC "
+                    + "LIMIT 1";
+
+            PreparedStatement ps
+                    = conn.prepareStatement(sql);
 
             ps.setInt(1, userId);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    address = mapAddress(rs);
-                }
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                address = new Address();
+
+                address.setAddressId(rs.getInt("address_id"));
+                address.setUserId(rs.getInt("user_id"));
+                address.setFullName(rs.getString("full_name"));
+                address.setPhone(rs.getString("phone"));
+                address.setAddressLine(rs.getString("address_line"));
+                address.setCity(rs.getString("city"));
+                address.setState(rs.getString("state"));
+                address.setPostcode(rs.getString("postcode"));
+                address.setDefault(rs.getBoolean("is_default"));
             }
+
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return address;
-    }
-
-    private Address mapAddress(ResultSet rs) throws Exception {
-
-        Address address = new Address();
-
-        address.setAddressId(rs.getInt("address_id"));
-        address.setUserId(rs.getInt("user_id"));
-        address.setFullName(rs.getString("full_name"));
-        address.setPhone(rs.getString("phone"));
-        address.setAddressLine(rs.getString("address_line"));
-        address.setCity(rs.getString("city"));
-        address.setState(rs.getString("state"));
-        address.setPostcode(rs.getString("postcode"));
-        address.setDefault(rs.getBoolean("is_default"));
 
         return address;
     }

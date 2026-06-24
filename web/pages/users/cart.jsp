@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="com.project.dao.UserDAO" %>
 <%@ page import="com.project.model.User" %>
@@ -406,4 +405,6 @@
             loadCart();
 
         </script>
+
     </body>
+</html>
