@@ -18,23 +18,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import com.project.dao.AddressDAO;
+import com.project.model.Address;
 
 public class CheckoutController extends HttpServlet {
 
-    private static final String TOYYIBPAY_API_URL =
-            "https://toyyibpay.com/index.php/api/createBill";
+    private static final String TOYYIBPAY_API_URL
+            = "https://toyyibpay.com/index.php/api/createBill";
 
-    private static final String TOYYIBPAY_PAYMENT_URL =
-            "https://toyyibpay.com/";
+    private static final String TOYYIBPAY_PAYMENT_URL
+            = "https://toyyibpay.com/";
 
-    private static final String SECRET_KEY =
-            "g4unf9oe-mrhg-4h42-8fc6-u38wydg8e864";
+    private static final String SECRET_KEY
+            = "g4unf9oe-mrhg-4h42-8fc6-u38wydg8e864";
 
-    private static final String CATEGORY_CODE =
-            "huu88rpz";
+    private static final String CATEGORY_CODE
+            = "huu88rpz";
 
-    private static final String CART_PAGE =
-            "/pages/users/cart.jsp";
+    private static final String CART_PAGE
+            = "/pages/users/cart.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -59,6 +61,26 @@ public class CheckoutController extends HttpServlet {
         }
 
         int userId = Integer.parseInt(userObj.toString());
+        AddressDAO addressDAO = new AddressDAO();
+        Address primaryAddress = addressDAO.getPrimaryAddress(userId);
+
+        String addressText = "";
+
+        if (primaryAddress != null) {
+
+            addressText
+                    = primaryAddress.getFullName()
+                    + " | "
+                    + primaryAddress.getPhone()
+                    + " | "
+                    + primaryAddress.getAddressLine()
+                    + ", "
+                    + primaryAddress.getCity()
+                    + ", "
+                    + primaryAddress.getState()
+                    + ", "
+                    + primaryAddress.getPostcode();
+        }
 
         String fullName = request.getParameter("fullname");
 
@@ -86,6 +108,33 @@ public class CheckoutController extends HttpServlet {
 
         String totalParam = request.getParameter("totalAmount");
         String cartData = request.getParameter("cartData");
+        String paymentMethod
+                = request.getParameter("paymentMethod");
+
+        String membershipTier
+                = request.getParameter("membershipTier");
+
+        String discountStr
+                = request.getParameter("discountPercent");
+
+        String originalAmountStr
+                = request.getParameter("originalAmount");
+
+        int discountPercent = 0;
+
+        if (discountStr != null && !discountStr.isEmpty()) {
+            discountPercent
+                    = Integer.parseInt(discountStr);
+        }
+
+        double originalAmount = 0;
+
+        if (originalAmountStr != null
+                && !originalAmountStr.isEmpty()) {
+
+            originalAmount
+                    = Double.parseDouble(originalAmountStr);
+        }
 
         if (totalParam == null || totalParam.trim().isEmpty()) {
             response.sendRedirect(request.getContextPath() + CART_PAGE + "?error=missing_total");
@@ -134,7 +183,32 @@ public class CheckoutController extends HttpServlet {
                 return;
             }
 
-            saveOrder(userId, orderRef, totalAmount, billCode);
+            try {
+                discountPercent = Integer.parseInt(
+                        request.getParameter("discountPercent")
+                );
+            } catch (Exception e) {
+            }
+
+            try {
+                originalAmount = Double.parseDouble(
+                        request.getParameter("originalAmount")
+                );
+            } catch (Exception e) {
+                originalAmount = totalAmount;
+            }
+
+            saveOrder(
+                    userId,
+                    orderRef,
+                    totalAmount,
+                    billCode,
+                    addressText,
+                    paymentMethod,
+                    membershipTier,
+                    discountPercent,
+                    originalAmount
+            );
 
             response.sendRedirect(TOYYIBPAY_PAYMENT_URL + billCode);
 
@@ -153,8 +227,8 @@ public class CheckoutController extends HttpServlet {
             String returnUrl,
             String callbackUrl) throws IOException {
 
-        String data =
-                "userSecretKey=" + encode(SECRET_KEY)
+        String data
+                = "userSecretKey=" + encode(SECRET_KEY)
                 + "&categoryCode=" + encode(CATEGORY_CODE)
                 + "&billName=" + encode("Ms. Dee Order")
                 + "&billDescription=" + encode("Payment for order " + orderRef)
@@ -212,16 +286,26 @@ public class CheckoutController extends HttpServlet {
         return null;
     }
 
-    private int saveOrder(int userId, String orderRef, double totalAmount, String billCode)
+    private int saveOrder(
+            int userId,
+            String orderRef,
+            double totalAmount,
+            String billCode,
+            String addressText,
+            String paymentMethod,
+            String membershipTier,
+            int discountPercent,
+            double originalAmount)
             throws Exception {
 
-        String sql =
-                "INSERT INTO orders "
-                + "(userId, orderRef, totalAmount, paymentStatus, billCode, orderStatus) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql
+                = "INSERT INTO orders "
+                + "(userId, orderRef, totalAmount, paymentStatus, billCode, "
+                + "orderStatus, addressText, paymentMethod, membershipTier, "
+                + "discountPercent, originalAmount) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setInt(1, userId);
             ps.setString(2, orderRef);
@@ -229,6 +313,12 @@ public class CheckoutController extends HttpServlet {
             ps.setString(4, "Pending");
             ps.setString(5, billCode);
             ps.setString(6, "Processing");
+
+            ps.setString(7, addressText);
+            ps.setString(8, paymentMethod);
+            ps.setString(9, membershipTier);
+            ps.setInt(10, discountPercent);
+            ps.setDouble(11, originalAmount);
 
             ps.executeUpdate();
 

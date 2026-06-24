@@ -1,5 +1,56 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.project.dao.UserDAO" %>
+<%@ page import="com.project.model.User" %>
+<%@ page import="com.project.dao.AddressDAO" %>
+<%@ page import="com.project.model.Address" %>
 
+<%
+    if (session.getAttribute("userId") == null) {
+        response.sendRedirect(request.getContextPath() + "/pages/users/login.jsp");
+        return;
+    }
+
+    int userId = Integer.parseInt(session.getAttribute("userId").toString());
+
+    UserDAO userDAO = new UserDAO();
+    User user = userDAO.getUserById(userId);
+
+    AddressDAO addressDAO = new AddressDAO();
+    Address primaryAddress = addressDAO.getPrimaryAddress(userId);
+
+    String membershipTier = "Bronze";
+    int memberDiscount = 0;
+
+    if (user != null) {
+        membershipTier = user.getMembershipTier();
+        memberDiscount = user.getDiscount();
+    }
+
+    String addressDisplay = "";
+
+    if (primaryAddress != null) {
+
+        addressDisplay
+                = primaryAddress.getFullName()
+                + "<br>"
+                + primaryAddress.getPhone()
+                + "<br>"
+                + primaryAddress.getAddressLine()
+                + ", "
+                + primaryAddress.getCity()
+                + ", "
+                + primaryAddress.getState()
+                + " "
+                + primaryAddress.getPostcode();
+
+    } else {
+
+        addressDisplay
+                = "No primary address selected.<br>"
+                + "Please add an address first.";
+
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,6 +68,21 @@
 
             <h1>Shopping Cart</h1>
 
+            <div class="checkout-section">
+                <h3>Shipping Address</h3>
+
+                <div class="address-display">
+                    <p id="addressText">
+                        <%= addressDisplay%>
+                    </p>
+
+                    <a href="${pageContext.request.contextPath}/addresses"
+                       class="small-btn">
+                        Manage Addresses
+                    </a>
+                </div>
+            </div>
+
             <div class="cart-select-actions" id="cartSelectActions">
                 <label>
                     <input type="checkbox" id="selectAllCart" onchange="toggleSelectAll(this)">
@@ -25,13 +91,46 @@
             </div>
 
             <div id="cartItems" class="cart-items"></div>
+            <br> 
+            <div class="checkout-section membership-box">
+                <h3>Membership Discount</h3>
+
+                <p>
+                    Current Tier:
+                    <strong><%= membershipTier%></strong>
+                </p>
+
+                <p>
+                    Discount:
+                    <strong><%= memberDiscount%>%</strong>
+                </p>
+            </div>
+            <div class="checkout-section">
+                <h3>Payment Method</h3>
+
+                <select id="paymentMethod" class="payment-select">
+                    <option value="ToyyibPay">ToyyibPay Online Banking</option>
+                    <option value="FPX">FPX Transfer</option>
+                    <option value="Credit Card">Credit Card</option>
+                </select>
+            </div>
 
             <div class="cart-summary">
 
                 <h3>Cart Summary</h3>
 
                 <div class="summary-row">
-                    <span>Selected total:</span>
+                    <span>Subtotal</span>
+                    <span id="subtotalAmount">RM 0.00</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Member Discount</span>
+                    <span id="discountAmount">RM 0.00</span>
+                </div>
+
+                <div class="summary-row total-row">
+                    <span>Total</span>
                     <span id="cartTotal">RM 0.00</span>
                 </div>
 
@@ -39,6 +138,24 @@
                       method="post"
                       onsubmit="return prepareCheckoutData()">
 
+                    <input type="hidden"
+                           name="addressText"
+                           id="addressTextInput">
+                    <input type="hidden"
+                           name="paymentMethod"
+                           id="paymentMethodInput">
+
+                    <input type="hidden"
+                           name="membershipTier"
+                           value="<%= membershipTier%>">
+
+                    <input type="hidden"
+                           name="discountPercent"
+                           value="<%= memberDiscount%>">
+
+                    <input type="hidden"
+                           name="originalAmount"
+                           id="originalAmountInput">
                     <input type="hidden"
                            name="totalAmount"
                            id="totalAmountInput">
@@ -66,18 +183,18 @@
                 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
                 return cart.filter(item =>
-                        item
-                        && item.name
-                        && !isNaN(parseFloat(item.price))
-                        && !isNaN(parseInt(item.quantity))
+                    item
+                            && item.name
+                            && !isNaN(parseFloat(item.price))
+                            && !isNaN(parseInt(item.quantity))
                 ).map(item => ({
-                    name: item.name,
-                    price: parseFloat(item.price),
-                    // FIX: Maps 'imageUrl' from your backend CartItem model safely
-                    image: item.imageUrl || item.image, 
-                    quantity: parseInt(item.quantity),
-                    selected: item.selected !== false
-                }));
+                        name: item.name,
+                        price: parseFloat(item.price),
+                        // FIX: Maps 'imageUrl' from your backend CartItem model safely
+                        image: item.imageUrl || item.image,
+                        quantity: parseInt(item.quantity),
+                        selected: item.selected !== false
+                    }));
             }
 
             function saveCart(cart) {
@@ -127,7 +244,7 @@
 
                     // 2. Safely construct the full absolute path for your images
                     let correctedImageSrc = item.image || "";
-                    
+
                     if (correctedImageSrc && !correctedImageSrc.startsWith(contextPath) && !correctedImageSrc.startsWith("http")) {
                         let cleanImagePath = correctedImageSrc.startsWith("/") ? correctedImageSrc : "/" + correctedImageSrc;
                         correctedImageSrc = contextPath + cleanImagePath;
@@ -178,11 +295,28 @@
 
             function updateSummary(total, itemCount, selectedCount) {
 
-                document.getElementById("cartTotal").innerText =
-                        "RM " + total.toFixed(2);
+                let discount = <%= memberDiscount%>;
+
+                let discountAmount =
+                        total * (discount / 100);
+
+                let finalAmount =
+                        total - discountAmount;
+
+                document.getElementById("originalAmountInput").value =
+                        total.toFixed(2);
 
                 document.getElementById("totalAmountInput").value =
-                        total.toFixed(2);
+                        finalAmount.toFixed(2);
+
+                document.getElementById("subtotalAmount").innerText =
+                        "RM " + total.toFixed(2);
+
+                document.getElementById("discountAmount").innerText =
+                        "- RM " + discountAmount.toFixed(2);
+
+                document.getElementById("cartTotal").innerText =
+                        "RM " + finalAmount.toFixed(2);
 
                 let checkoutBtn = document.getElementById("checkoutBtn");
 
@@ -257,7 +391,13 @@
                 localStorage.setItem(
                         "checkoutItems",
                         JSON.stringify(selectedCart)
-                );
+                        );
+
+                document.getElementById("paymentMethodInput").value =
+                        document.getElementById("paymentMethod").value;
+
+                document.getElementById("addressTextInput").value =
+                        document.getElementById("addressText").innerText;
 
                 return true;
             }

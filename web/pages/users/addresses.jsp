@@ -14,8 +14,12 @@
         <jsp:include page="../../partials/header.jsp"/>
 
         <main class="main-content">
-            <div class="address-page">
 
+            <div class="address-page">
+                <a href="${pageContext.request.contextPath}/profile"
+                   class="small-btn">
+                    ← Back
+                </a>
                 <div class="address-title">
                     <h1>My Addresses</h1>
                     <p>Manage your saved shipping addresses</p>
@@ -107,7 +111,7 @@
                                         type="checkbox"
 
                                         <%=a.isDefault()
-        ? "checked" : ""%>
+                                                ? "checked" : ""%>
 
                                         onchange="this.form.submit()">
 

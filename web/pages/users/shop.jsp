@@ -506,5 +506,6 @@
             updateCartCount();
             applyCategoryFromUrl();
         </script>
+        <jsp:include page="../../partials/footer.jsp"/>
     </body>
 </html>

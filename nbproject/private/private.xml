@@ -2,6 +2,25 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/controller/ProfileController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/cart.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/controller/CheckoutController.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/checkout.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/orders.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/dao/UserDAO.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/dao/OrderDAO.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/profile.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/partials/footer.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/membership.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/homepage.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/dao/AddressDAO.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/shop.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/model/User.java</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/addresses.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/assets/css/style.css</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/web/pages/users/promotions.jsp</file>
+            <file>file:/C:/Users/ACER/OneDrive/Documents/CSE3953/MsDee/src/java/com/project/controller/AddressController.java</file>
+        </group>
     </open-files>
 </project-private>
